@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build html",
+            "type": "shell",
+            "command": "mvn clean package",
+            "group": "build"
+        },
+        {
+            "label": "Build pdf",
+            "type": "shell",
+            "command": "mvn clean package -Ppdf",
+            "group": "build"
+        }
+    ]
+}

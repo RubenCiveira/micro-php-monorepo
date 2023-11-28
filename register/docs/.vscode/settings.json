@@ -1,0 +1,8 @@
+{
+    "asciidoc.use_kroki": true,
+    "files.exclude": {
+        "target/": true,
+        ".vscode": true,
+        ".kanbn": true
+    }
+}

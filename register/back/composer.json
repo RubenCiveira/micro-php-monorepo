@@ -1,0 +1,16 @@
+{
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "path",
+            "url": "/Users/ruben.civeiraiglesia/Documents/Proyectos/Personal/php-micros/bundles/php/micro"
+        }
+    ],
+    "require": {
+        "civi/micro": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Register\\": "src/"
+        }
+    }}
