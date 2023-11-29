@@ -9,8 +9,12 @@
     "require": {
         "civi/micro": "*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "^10"
+    },
     "autoload": {
         "psr-4": {
             "Register\\": "src/"
         }
-    }}
+    }
+}

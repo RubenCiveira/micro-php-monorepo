@@ -10,24 +10,25 @@
 	<conf name="front-folder" value="../front" />
     -->
     <!-- cada group un microservicio y microback-->
-    <entity name="service" generator="uuid" display="name">
-        <property name="uid" type="xs:integer" required="true" />
-        <property name="name" type="xs:string" required="true" />
+    <entity name="service" generator="uuid" id="uid" display="name">
+        <property name="uid" type="xs:integer" unique="true" required="true" />
+        <property name="name" type="xs:string" unique="true" required="true" />
         <facade type="crud" path="services">
         </facade>
     </entity>
-    <entity name="host" generator="uid" display="name">
-        <property name="uid" type="xs:integer" required="true" />
-        <property name="name" type="xs:string" required="true" />
+    <entity name="host" generator="uid" id="uid" display="name">
+        <property name="uid" type="xs:integer" unique="true" required="true" />
+        <property name="name" type="xs:string" unique="true" required="true" />
         <property name="service" type="tns:service" required="true" />
         <facade type="crud" path="hosts">
         </facade>
     </entity>
-    <entity name="config" generator="uid" display="service,property">
-        <property name="uid" type="xs:integer" required="true" />
+    <entity name="config" generator="uid" id="uid" display="service,property">
+        <property name="uid" type="xs:integer" unique="true" required="true" />
         <property name="service" type="tns:service" required="true" />
         <property name="property" type="xs:string" required="true" />
         <property name="value" type="xs:string" required="true" />
+        <key unique="true" properties="service,property" remark="property" />
         <facade type="crud" path="configs">
         </facade>
     </entity>
