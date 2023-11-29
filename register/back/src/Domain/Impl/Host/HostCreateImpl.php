@@ -1,10 +1,10 @@
 <?php
 namespace Register\Domain\Impl\Host;
 
-use Register\Doamin\Port\Api\Host\Create\HostCreateUseCase;
+use Register\Domain\Port\Api\Host\Create\HostCreateUseCase;
 use Register\Domain\Port\Api\Host\Create\HostCreateRequest;
 use Register\Domain\Port\Api\Host\Create\HostCreateResponse;
-use Register\Port\Spi\Host\HostRepository;
+use Register\Domain\Port\Spi\Host\HostRepository;
 
 class HostCreateImpl implements HostCreateUseCase {
   public function __construct(private readonly HostRepository $repository) {}

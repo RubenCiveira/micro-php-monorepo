@@ -1,6 +1,7 @@
 <?php
 namespace Register\Adapter\Service;
 
+use Closure;
 use Civi\Micro\Sql\SqlTemplate;
 use Register\Domain\Port\Spi\Service\ServiceRepository;
 use Register\Domain\Model\Service;
@@ -13,9 +14,9 @@ use Civi\Micro\Exception\ConstraintException;
 
 class ServiceSqlRepository implements ServiceRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(ServiceFilter $filter, ServiceSort $sort): array {
+  public function list(?ServiceFilter $filter, ?ServiceSort $sort): array {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], [$this, 'mapper']);
+    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
   }
   public function create(Service $entity): Service {
     $entity->setVersion(0);
@@ -26,11 +27,12 @@ class ServiceSqlRepository implements ServiceRepository {
            'version' => $entity->version
       ]);
     } catch(NotUniqueException $ex) {
-      $this->checkDuplicates( $entity );    }
+      $this->checkDuplicates( $entity );
+    }
     return $entity;
   }
   public function retrieve(ServiceRef $entity): Service {
-    return $this->db->findOne('SELECT uid FROM service where uid = :uid',['uid' => $entity->uid], [this, 'mapper']);
+    return $this->db->findOne('SELECT uid FROM service where uid = :uid',['uid' => $entity->uid], fn($row) => this->mapper($row));
   }
   public function update(Service $update): Service {
     $version = $update->version;
@@ -54,11 +56,11 @@ class ServiceSqlRepository implements ServiceRepository {
   public function delete(ServiceRef $entity) {
     return $this->db->execute('DELETE FROM service where uid = :uid',['uid' => $entity->uid]);
   }
-  public function exists(ServiceRef $entity, ServiceFilter $filter): bool {
+  public function exists(ServiceRef $entity, ?ServiceFilter $filter): bool {
     $sqlFilter = $this->filter($entity, $filter, null);
     return $this->db->exists($sqlFilter['query'], $sqlFilter['params']);
   }
-  private function filter(ServiceRef $ref,ServiceFilter $filter,ServiceSort $sort) {
+  private function filter(?ServiceRef $ref,?ServiceFilter $filter,?ServiceSort $sort) {
     $join = '';
     $query = '';
     $params = [];

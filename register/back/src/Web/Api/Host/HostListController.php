@@ -6,6 +6,9 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Host\List\HostListUseCase;
 use Register\Domain\Port\Api\Host\List\HostListRequest;
 use Register\Domain\Port\Api\Host\List\HostListResponse;
+use Register\Domain\Model\Query\HostFilter;
+use Register\Domain\Model\Query\HostSort;
+use Register\Domain\Model\Ref\ServiceRef;
 
 class HostListController {
   public function __construct(private readonly HostListUseCase $usecase) {}
@@ -16,8 +19,9 @@ class HostListController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): HostListRequest {
-    $vo = new HostListRequest();
-    return $vo;
+    return new HostListRequest(new HostFilter(uids: null,
+              search: null,
+              service: null), new HostSort());
   }
   private function toDto(HostListResponse $response) {
     return $response;

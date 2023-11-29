@@ -2,13 +2,10 @@
 use Civi\Micro\Context;
 use Civi\Micro\WebContext;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
-Context::registerDefinitions(require '../resources/starter/services/definitions.php');
+Context::registerDefinitions(require '../../resources/starter/definitions.php');
+Context::registerDefinitions(require '../../resources/starter/services/definitions.php');
 
-$context = new WebContext(dirname($_SERVER['SCRIPT_NAME']));
-if( !is_dir('../.cache') ) {
-    mkdir('../.cache');
-}
-$context->cache('../.cache');
-$context->start( require '../resources/starter/services/routes.php' );
+$context = new WebContext('../../', dirname($_SERVER['SCRIPT_NAME']));
+$context->start( require '../../resources/starter/services/routes.php' );

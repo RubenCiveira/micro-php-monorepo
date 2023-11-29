@@ -468,7 +468,7 @@ wpcs/*
 *.scss.map
 
 .DS_STORE
-
+.cache/
 dist/
 bazel-out
 integration/bazel/bazel-*

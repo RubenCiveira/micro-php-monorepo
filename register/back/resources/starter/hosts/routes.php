@@ -1,4 +1,6 @@
 <?php
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
 return function (\Slim\App $app, \Psr\Container\ContainerInterface $injector) {
     $app->get('/', function (Request $request, Response $response, $args) use($injector) {
         $controller = $injector->get(\Register\Web\Api\Host\HostListController::class);

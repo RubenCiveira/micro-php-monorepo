@@ -5,4 +5,4 @@ return function($context) {
   $context->bind(Register\Domain\Port\Api\Host\Retrieve\HostRetrieveUseCase::class)->to(Register\Domain\Impl\Host\HostRetrieveImpl::class);
   $context->bind(Register\Domain\Port\Api\Host\Update\HostUpdateUseCase::class)->to(Register\Domain\Impl\Host\HostUpdateImpl::class);
   $context->bind(Register\Domain\Port\Api\Host\Delete\HostDeleteUseCase::class)->to(Register\Domain\Impl\Host\HostDeleteImpl::class);
-}
+};

@@ -1,6 +1,7 @@
 <?php
 namespace Register\Adapter\Host;
 
+use Closure;
 use Civi\Micro\Sql\SqlTemplate;
 use Register\Domain\Port\Spi\Host\HostRepository;
 use Register\Domain\Model\Host;
@@ -14,9 +15,9 @@ use Register\Domain\Model\Ref\ServiceRef;
 
 class HostSqlRepository implements HostRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(HostFilter $filter, HostSort $sort): array {
+  public function list(?HostFilter $filter, ?HostSort $sort): array {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], [$this, 'mapper']);
+    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
   }
   public function create(Host $entity): Host {
     $entity->setVersion(0);
@@ -28,11 +29,12 @@ class HostSqlRepository implements HostRepository {
            'version' => $entity->version
       ]);
     } catch(NotUniqueException $ex) {
-      $this->checkDuplicates( $entity );    }
+      $this->checkDuplicates( $entity );
+    }
     return $entity;
   }
   public function retrieve(HostRef $entity): Host {
-    return $this->db->findOne('SELECT uid FROM host where uid = :uid',['uid' => $entity->uid], [this, 'mapper']);
+    return $this->db->findOne('SELECT uid FROM host where uid = :uid',['uid' => $entity->uid], fn($row) => this->mapper($row));
   }
   public function update(Host $update): Host {
     $version = $update->version;
@@ -57,11 +59,11 @@ class HostSqlRepository implements HostRepository {
   public function delete(HostRef $entity) {
     return $this->db->execute('DELETE FROM host where uid = :uid',['uid' => $entity->uid]);
   }
-  public function exists(HostRef $entity, HostFilter $filter): bool {
+  public function exists(HostRef $entity, ?HostFilter $filter): bool {
     $sqlFilter = $this->filter($entity, $filter, null);
     return $this->db->exists($sqlFilter['query'], $sqlFilter['params']);
   }
-  private function filter(HostRef $ref,HostFilter $filter,HostSort $sort) {
+  private function filter(?HostRef $ref,?HostFilter $filter,?HostSort $sort) {
     $join = '';
     $query = '';
     $params = [];

@@ -1,6 +1,6 @@
 <?php
 return function($context) {
-  $context->bind(Register\Domain\Port\Spi\ServiceRepository::class)->to(Register\Adapter\Service\ServicePdoRepository::class);
-  $context->bind(Register\Domain\Port\Spi\HostRepository::class)->to(Register\Adapter\Host\HostPdoRepository::class);
-  $context->bind(Register\Domain\Port\Spi\ConfigRepository::class)->to(Register\Adapter\Config\ConfigPdoRepository::class);
-}
+  $context->bind(Register\Domain\Port\Spi\Service\ServiceRepository::class)->to(Register\Adapter\Service\ServiceSqlRepository::class);
+  $context->bind(Register\Domain\Port\Spi\Host\HostRepository::class)->to(Register\Adapter\Host\HostSqlRepository::class);
+  $context->bind(Register\Domain\Port\Spi\Config\ConfigRepository::class)->to(Register\Adapter\Config\ConfigSqlRepository::class);
+};

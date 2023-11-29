@@ -6,6 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Service\List\ServiceListUseCase;
 use Register\Domain\Port\Api\Service\List\ServiceListRequest;
 use Register\Domain\Port\Api\Service\List\ServiceListResponse;
+use Register\Domain\Model\Query\ServiceFilter;
+use Register\Domain\Model\Query\ServiceSort;
 
 class ServiceListController {
   public function __construct(private readonly ServiceListUseCase $usecase) {}
@@ -16,8 +18,8 @@ class ServiceListController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): ServiceListRequest {
-    $vo = new ServiceListRequest();
-    return $vo;
+    return new ServiceListRequest(new ServiceFilter(uids: null,
+              search: null), new ServiceSort());
   }
   private function toDto(ServiceListResponse $response) {
     return $response;

@@ -8,9 +8,9 @@ use Register\Domain\Model\Ref\ServiceRef;
 
 interface ServiceRepository {
   public function create(Service $entity): Service;
-  public function list(ServiceFilter $filter, ServiceSort $sort): array;
+  public function list(?ServiceFilter $filter, ?ServiceSort $sort): array;
   public function retrieve(ServiceRef $filter): Service;
   public function update(Service $entity): Service;
   public function delete(ServiceRef $entity);
-  public function exists(ServiceRef $entity, ServiceFilter $filter): bool;
+  public function exists(ServiceRef $entity, ?ServiceFilter $filter): bool;
 }

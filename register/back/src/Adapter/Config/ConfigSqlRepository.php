@@ -1,6 +1,7 @@
 <?php
 namespace Register\Adapter\Config;
 
+use Closure;
 use Civi\Micro\Sql\SqlTemplate;
 use Register\Domain\Port\Spi\Config\ConfigRepository;
 use Register\Domain\Model\Config;
@@ -14,9 +15,9 @@ use Register\Domain\Model\Ref\ServiceRef;
 
 class ConfigSqlRepository implements ConfigRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(ConfigFilter $filter, ConfigSort $sort): array {
+  public function list(?ConfigFilter $filter, ?ConfigSort $sort): array {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], [$this, 'mapper']);
+    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
   }
   public function create(Config $entity): Config {
     $entity->setVersion(0);
@@ -29,11 +30,12 @@ class ConfigSqlRepository implements ConfigRepository {
            'version' => $entity->version
       ]);
     } catch(NotUniqueException $ex) {
-      $this->checkDuplicates( $entity );    }
+      $this->checkDuplicates( $entity );
+    }
     return $entity;
   }
   public function retrieve(ConfigRef $entity): Config {
-    return $this->db->findOne('SELECT uid FROM config where uid = :uid',['uid' => $entity->uid], [this, 'mapper']);
+    return $this->db->findOne('SELECT uid FROM config where uid = :uid',['uid' => $entity->uid], fn($row) => this->mapper($row));
   }
   public function update(Config $update): Config {
     $version = $update->version;
@@ -59,11 +61,11 @@ class ConfigSqlRepository implements ConfigRepository {
   public function delete(ConfigRef $entity) {
     return $this->db->execute('DELETE FROM config where uid = :uid',['uid' => $entity->uid]);
   }
-  public function exists(ConfigRef $entity, ConfigFilter $filter): bool {
+  public function exists(ConfigRef $entity, ?ConfigFilter $filter): bool {
     $sqlFilter = $this->filter($entity, $filter, null);
     return $this->db->exists($sqlFilter['query'], $sqlFilter['params']);
   }
-  private function filter(ConfigRef $ref,ConfigFilter $filter,ConfigSort $sort) {
+  private function filter(?ConfigRef $ref,?ConfigFilter $filter,?ConfigSort $sort) {
     $join = '';
     $query = '';
     $params = [];

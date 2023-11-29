@@ -20,3 +20,10 @@ ALTER TABLE config ADD CONSTRAINT FK_CONFIG_SERVICE FOREIGN KEY (service) REFERE
 
 --changeset auto.generated:1825492372-7
 ALTER TABLE host ADD CONSTRAINT FK_HOST_SERVICE FOREIGN KEY (service) REFERENCES service (uid) ON UPDATE RESTRICT ON DELETE RESTRICT;
+--liquibase formatted sql
+
+--changeset auto.generated:250139598-1
+CREATE UNIQUE INDEX UK_HOST_NAME_UNIQUE ON host(name);
+
+--changeset auto.generated:250139598-2
+CREATE UNIQUE INDEX UK_SERVICE_NAME_UNIQUE ON service(name);
