@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Config\ConfigRepository;
 class ConfigUpdateImpl implements ConfigUpdateUseCase {
   public function __construct(private readonly ConfigRepository $repository) {}
   public function Update(ConfigUpdateRequest $request): ConfigUpdateResponse {
-    return new ConfigListResponse();
+    $updated = $this->repository->update($request->ref, $request->entity);
+    return new ConfigUpdateResponse(data: $updated);
   }
 }

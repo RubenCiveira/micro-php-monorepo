@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Config\ConfigRepository;
 class ConfigCreateImpl implements ConfigCreateUseCase {
   public function __construct(private readonly ConfigRepository $repository) {}
   public function Create(ConfigCreateRequest $request): ConfigCreateResponse {
-    return new ConfigListResponse();
+    $created = $this->repository->create($request->entity);
+    return new ConfigCreateResponse(data: $created);
   }
 }

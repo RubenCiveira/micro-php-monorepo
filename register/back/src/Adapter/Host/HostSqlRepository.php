@@ -33,10 +33,10 @@ class HostSqlRepository implements HostRepository {
     }
     return $entity;
   }
-  public function retrieve(HostRef $entity): Host {
+  public function retrieve(HostRef $entity): ?Host {
     return $this->db->findOne('SELECT uid FROM host where uid = :uid',['uid' => $entity->uid], fn($row) => this->mapper($row));
   }
-  public function update(Host $update): Host {
+  public function update(Host $update): ?Host {
     $version = $update->version;
     $update->Version(0);
     try {
@@ -56,7 +56,7 @@ class HostSqlRepository implements HostRepository {
     }
     return $update;
   }
-  public function delete(HostRef $entity) {
+  public function delete(HostRef $entity): bool {
     return $this->db->execute('DELETE FROM host where uid = :uid',['uid' => $entity->uid]);
   }
   public function exists(HostRef $entity, ?HostFilter $filter): bool {

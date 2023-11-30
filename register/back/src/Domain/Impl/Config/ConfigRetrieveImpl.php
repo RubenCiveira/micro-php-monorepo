@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Config\ConfigRepository;
 class ConfigRetrieveImpl implements ConfigRetrieveUseCase {
   public function __construct(private readonly ConfigRepository $repository) {}
   public function Retrieve(ConfigRetrieveRequest $request): ConfigRetrieveResponse {
-    return new ConfigListResponse();
+    $finded = $this->repository->retrieve($request->ref);
+    return new ConfigRetrieveResponse(data: $finded);
   }
 }

@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Config\ConfigRepository;
 class ConfigDeleteImpl implements ConfigDeleteUseCase {
   public function __construct(private readonly ConfigRepository $repository) {}
   public function Delete(ConfigDeleteRequest $request): ConfigDeleteResponse {
-    return new ConfigListResponse();
+    $result = $this->repository->delete($request->ref);
+    return new ConfigDeleteResponse(result: $result);
   }
 }

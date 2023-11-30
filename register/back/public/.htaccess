@@ -1,0 +1,21 @@
+Options -Indexes
+
+RewriteEngine On
+
+# No reescribir archivos, directorios o enlaces simbólicos existentes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+# Reescribe cualquier solicitud a 'q' o 'q/xxx' y cualquier cosa después a 'q/profile.php'
+RewriteRule ^q(/.*)?$ q/profile.php [NC,L]
+
+
+# No reescribir archivos, directorios o enlaces simbólicos existentes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+
+# Reescribe cualquier solicitud a 'xx' o 'xx/' y cualquier cosa después a 'xx.php'
+RewriteRule ^([^/]+)(/.*)?$ $1.php [NC,L]
+
+

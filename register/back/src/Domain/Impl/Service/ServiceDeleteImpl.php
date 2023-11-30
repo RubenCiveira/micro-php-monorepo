@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Service\ServiceRepository;
 class ServiceDeleteImpl implements ServiceDeleteUseCase {
   public function __construct(private readonly ServiceRepository $repository) {}
   public function Delete(ServiceDeleteRequest $request): ServiceDeleteResponse {
-    return new ServiceListResponse();
+    $result = $this->repository->delete($request->ref);
+    return new ServiceDeleteResponse(result: $result);
   }
 }

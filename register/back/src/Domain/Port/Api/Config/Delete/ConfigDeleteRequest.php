@@ -1,7 +1,8 @@
 <?php
 namespace Register\Domain\Port\Api\Config\Delete;
 
+use Register\Domain\Model\Query\ConfigRef;
 
 class ConfigDeleteRequest {
-  public function __construct(){}
+  public function __construct(public readonly ?ConfigRef $ref){}
 }

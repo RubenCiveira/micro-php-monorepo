@@ -34,10 +34,10 @@ class ConfigSqlRepository implements ConfigRepository {
     }
     return $entity;
   }
-  public function retrieve(ConfigRef $entity): Config {
+  public function retrieve(ConfigRef $entity): ?Config {
     return $this->db->findOne('SELECT uid FROM config where uid = :uid',['uid' => $entity->uid], fn($row) => this->mapper($row));
   }
-  public function update(Config $update): Config {
+  public function update(Config $update): ?Config {
     $version = $update->version;
     $update->Version(0);
     try {
@@ -58,7 +58,7 @@ class ConfigSqlRepository implements ConfigRepository {
     }
     return $update;
   }
-  public function delete(ConfigRef $entity) {
+  public function delete(ConfigRef $entity): bool {
     return $this->db->execute('DELETE FROM config where uid = :uid',['uid' => $entity->uid]);
   }
   public function exists(ConfigRef $entity, ?ConfigFilter $filter): bool {

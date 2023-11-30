@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Service\ServiceRepository;
 class ServiceRetrieveImpl implements ServiceRetrieveUseCase {
   public function __construct(private readonly ServiceRepository $repository) {}
   public function Retrieve(ServiceRetrieveRequest $request): ServiceRetrieveResponse {
-    return new ServiceListResponse();
+    $finded = $this->repository->retrieve($request->ref);
+    return new ServiceRetrieveResponse(data: $finded);
   }
 }

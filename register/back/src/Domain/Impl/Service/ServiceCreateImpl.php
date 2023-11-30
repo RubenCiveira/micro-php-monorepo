@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Service\ServiceRepository;
 class ServiceCreateImpl implements ServiceCreateUseCase {
   public function __construct(private readonly ServiceRepository $repository) {}
   public function Create(ServiceCreateRequest $request): ServiceCreateResponse {
-    return new ServiceListResponse();
+    $created = $this->repository->create($request->entity);
+    return new ServiceCreateResponse(data: $created);
   }
 }

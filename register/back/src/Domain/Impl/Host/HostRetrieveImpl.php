@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Host\HostRepository;
 class HostRetrieveImpl implements HostRetrieveUseCase {
   public function __construct(private readonly HostRepository $repository) {}
   public function Retrieve(HostRetrieveRequest $request): HostRetrieveResponse {
-    return new HostListResponse();
+    $finded = $this->repository->retrieve($request->ref);
+    return new HostRetrieveResponse(data: $finded);
   }
 }

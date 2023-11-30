@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Host\HostRepository;
 class HostCreateImpl implements HostCreateUseCase {
   public function __construct(private readonly HostRepository $repository) {}
   public function Create(HostCreateRequest $request): HostCreateResponse {
-    return new HostListResponse();
+    $created = $this->repository->create($request->entity);
+    return new HostCreateResponse(data: $created);
   }
 }

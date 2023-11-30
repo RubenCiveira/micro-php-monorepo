@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Host\HostRepository;
 class HostUpdateImpl implements HostUpdateUseCase {
   public function __construct(private readonly HostRepository $repository) {}
   public function Update(HostUpdateRequest $request): HostUpdateResponse {
-    return new HostListResponse();
+    $updated = $this->repository->update($request->ref, $request->entity);
+    return new HostUpdateResponse(data: $updated);
   }
 }

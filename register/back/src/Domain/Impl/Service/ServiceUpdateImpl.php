@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Service\ServiceRepository;
 class ServiceUpdateImpl implements ServiceUpdateUseCase {
   public function __construct(private readonly ServiceRepository $repository) {}
   public function Update(ServiceUpdateRequest $request): ServiceUpdateResponse {
-    return new ServiceListResponse();
+    $updated = $this->repository->update($request->ref, $request->entity);
+    return new ServiceUpdateResponse(data: $updated);
   }
 }

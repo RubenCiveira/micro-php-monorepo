@@ -31,10 +31,10 @@ class ServiceSqlRepository implements ServiceRepository {
     }
     return $entity;
   }
-  public function retrieve(ServiceRef $entity): Service {
+  public function retrieve(ServiceRef $entity): ?Service {
     return $this->db->findOne('SELECT uid FROM service where uid = :uid',['uid' => $entity->uid], fn($row) => this->mapper($row));
   }
-  public function update(Service $update): Service {
+  public function update(Service $update): ?Service {
     $version = $update->version;
     $update->Version(0);
     try {
@@ -53,7 +53,7 @@ class ServiceSqlRepository implements ServiceRepository {
     }
     return $update;
   }
-  public function delete(ServiceRef $entity) {
+  public function delete(ServiceRef $entity): bool {
     return $this->db->execute('DELETE FROM service where uid = :uid',['uid' => $entity->uid]);
   }
   public function exists(ServiceRef $entity, ?ServiceFilter $filter): bool {

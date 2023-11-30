@@ -9,6 +9,7 @@ use Register\Domain\Port\Spi\Host\HostRepository;
 class HostDeleteImpl implements HostDeleteUseCase {
   public function __construct(private readonly HostRepository $repository) {}
   public function Delete(HostDeleteRequest $request): HostDeleteResponse {
-    return new HostListResponse();
+    $result = $this->repository->delete($request->ref);
+    return new HostDeleteResponse(result: $result);
   }
 }

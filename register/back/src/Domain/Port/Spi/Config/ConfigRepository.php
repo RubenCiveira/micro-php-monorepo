@@ -9,8 +9,8 @@ use Register\Domain\Model\Ref\ConfigRef;
 interface ConfigRepository {
   public function create(Config $entity): Config;
   public function list(?ConfigFilter $filter, ?ConfigSort $sort): array;
-  public function retrieve(ConfigRef $filter): Config;
-  public function update(Config $entity): Config;
-  public function delete(ConfigRef $entity);
+  public function retrieve(ConfigRef $filter): ?Config;
+  public function update(Config $entity): ?Config;
+  public function delete(ConfigRef $entity): bool;
   public function exists(ConfigRef $entity, ?ConfigFilter $filter): bool;
 }
