@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Service\Create\ServiceCreateUseCase;
 use Register\Domain\Port\Api\Service\Create\ServiceCreateRequest;
 use Register\Domain\Port\Api\Service\Create\ServiceCreateResponse;
+use Register\Domain\Model\Service;
 
 class ServiceCreateController {
   public function __construct(private readonly ServiceCreateUseCase $usecase) {}
@@ -16,8 +17,10 @@ class ServiceCreateController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): ServiceCreateRequest {
-  $vo = new ServiceListRequest();
-  return $vo;
+    $row = $request->getParsedBody();
+    return new ServiceCreateRequest(entity: Service::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+             ->name( isset($row['name']) ? $row['name'] : null)
+             ->version( isset($row['version']) ? $row['version'] : null)->build());
   }
   private function toDto(ServiceCreateResponse $response) {
     return $response;

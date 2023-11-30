@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Host\Retrieve\HostRetrieveUseCase;
 use Register\Domain\Port\Api\Host\Retrieve\HostRetrieveRequest;
 use Register\Domain\Port\Api\Host\Retrieve\HostRetrieveResponse;
+use Register\Domain\Model\Ref\HostRef;
 
 class HostRetrieveController {
   public function __construct(private readonly HostRetrieveUseCase $usecase) {}
@@ -16,8 +17,7 @@ class HostRetrieveController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): HostRetrieveRequest {
-  $vo = new HostListRequest();
-  return $vo;
+    return new HostRetrieveRequest(ref: new HostRef(uid: $args['uid'] ));
   }
   private function toDto(HostRetrieveResponse $response) {
     return $response;

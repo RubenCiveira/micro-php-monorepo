@@ -6,6 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Service\Update\ServiceUpdateUseCase;
 use Register\Domain\Port\Api\Service\Update\ServiceUpdateRequest;
 use Register\Domain\Port\Api\Service\Update\ServiceUpdateResponse;
+use Register\Domain\Model\Ref\ServiceRef;
+use Register\Domain\Model\Service;
 
 class ServiceUpdateController {
   public function __construct(private readonly ServiceUpdateUseCase $usecase) {}
@@ -16,8 +18,10 @@ class ServiceUpdateController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): ServiceUpdateRequest {
-  $vo = new ServiceListRequest();
-  return $vo;
+    $row = $request->getParsedBody();
+    return new ServiceUpdateRequest(ref: new ServiceRef(uid: $args['uid']), entity: Service::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+             ->name( isset($row['name']) ? $row['name'] : null)
+             ->version( isset($row['version']) ? $row['version'] : null)->build());
   }
   private function toDto(ServiceUpdateResponse $response) {
     return $response;

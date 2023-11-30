@@ -1,6 +1,7 @@
 <?php
 namespace Register\Domain\Impl\Host;
 
+
 use Register\Domain\Port\Api\Host\Retrieve\HostRetrieveUseCase;
 use Register\Domain\Port\Api\Host\Retrieve\HostRetrieveRequest;
 use Register\Domain\Port\Api\Host\Retrieve\HostRetrieveResponse;

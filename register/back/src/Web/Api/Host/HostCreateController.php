@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Host\Create\HostCreateUseCase;
 use Register\Domain\Port\Api\Host\Create\HostCreateRequest;
 use Register\Domain\Port\Api\Host\Create\HostCreateResponse;
+use Register\Domain\Model\Host;
 
 class HostCreateController {
   public function __construct(private readonly HostCreateUseCase $usecase) {}
@@ -16,8 +17,11 @@ class HostCreateController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): HostCreateRequest {
-  $vo = new HostListRequest();
-  return $vo;
+    $row = $request->getParsedBody();
+    return new HostCreateRequest(entity: Host::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+             ->name( isset($row['name']) ? $row['name'] : null)
+             ->service( isset($row['service']) ? $row['service'] : null)
+             ->version( isset($row['version']) ? $row['version'] : null)->build());
   }
   private function toDto(HostCreateResponse $response) {
     return $response;

@@ -1,6 +1,7 @@
 <?php
 namespace Register\Domain\Impl\Host;
 
+
 use Register\Domain\Port\Api\Host\List\HostListUseCase;
 use Register\Domain\Port\Api\Host\List\HostListRequest;
 use Register\Domain\Port\Api\Host\List\HostListResponse;

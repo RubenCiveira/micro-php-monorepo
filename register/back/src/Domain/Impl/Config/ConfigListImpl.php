@@ -1,6 +1,7 @@
 <?php
 namespace Register\Domain\Impl\Config;
 
+
 use Register\Domain\Port\Api\Config\List\ConfigListUseCase;
 use Register\Domain\Port\Api\Config\List\ConfigListRequest;
 use Register\Domain\Port\Api\Config\List\ConfigListResponse;

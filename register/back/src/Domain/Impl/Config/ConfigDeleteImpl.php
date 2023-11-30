@@ -1,6 +1,7 @@
 <?php
 namespace Register\Domain\Impl\Config;
 
+
 use Register\Domain\Port\Api\Config\Delete\ConfigDeleteUseCase;
 use Register\Domain\Port\Api\Config\Delete\ConfigDeleteRequest;
 use Register\Domain\Port\Api\Config\Delete\ConfigDeleteResponse;

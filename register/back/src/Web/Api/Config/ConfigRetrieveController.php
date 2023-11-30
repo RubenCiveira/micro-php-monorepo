@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Config\Retrieve\ConfigRetrieveUseCase;
 use Register\Domain\Port\Api\Config\Retrieve\ConfigRetrieveRequest;
 use Register\Domain\Port\Api\Config\Retrieve\ConfigRetrieveResponse;
+use Register\Domain\Model\Ref\ConfigRef;
 
 class ConfigRetrieveController {
   public function __construct(private readonly ConfigRetrieveUseCase $usecase) {}
@@ -16,8 +17,7 @@ class ConfigRetrieveController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): ConfigRetrieveRequest {
-  $vo = new ConfigListRequest();
-  return $vo;
+    return new ConfigRetrieveRequest(ref: new ConfigRef(uid: $args['uid'] ));
   }
   private function toDto(ConfigRetrieveResponse $response) {
     return $response;

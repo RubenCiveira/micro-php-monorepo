@@ -1,6 +1,7 @@
 <?php
 namespace Register\Domain\Impl\Host;
 
+
 use Register\Domain\Port\Api\Host\Create\HostCreateUseCase;
 use Register\Domain\Port\Api\Host\Create\HostCreateRequest;
 use Register\Domain\Port\Api\Host\Create\HostCreateResponse;

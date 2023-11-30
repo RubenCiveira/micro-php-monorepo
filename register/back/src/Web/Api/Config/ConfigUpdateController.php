@@ -6,6 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Config\Update\ConfigUpdateUseCase;
 use Register\Domain\Port\Api\Config\Update\ConfigUpdateRequest;
 use Register\Domain\Port\Api\Config\Update\ConfigUpdateResponse;
+use Register\Domain\Model\Ref\ConfigRef;
+use Register\Domain\Model\Config;
 
 class ConfigUpdateController {
   public function __construct(private readonly ConfigUpdateUseCase $usecase) {}
@@ -16,8 +18,12 @@ class ConfigUpdateController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): ConfigUpdateRequest {
-  $vo = new ConfigListRequest();
-  return $vo;
+    $row = $request->getParsedBody();
+    return new ConfigUpdateRequest(ref: new ConfigRef(uid: $args['uid']), entity: Config::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+             ->service( isset($row['service']) ? $row['service'] : null)
+             ->property( isset($row['property']) ? $row['property'] : null)
+             ->value( isset($row['value']) ? $row['value'] : null)
+             ->version( isset($row['version']) ? $row['version'] : null)->build());
   }
   private function toDto(ConfigUpdateResponse $response) {
     return $response;

@@ -1,6 +1,7 @@
 <?php
 namespace Register\Domain\Impl\Host;
 
+
 use Register\Domain\Port\Api\Host\Delete\HostDeleteUseCase;
 use Register\Domain\Port\Api\Host\Delete\HostDeleteRequest;
 use Register\Domain\Port\Api\Host\Delete\HostDeleteResponse;

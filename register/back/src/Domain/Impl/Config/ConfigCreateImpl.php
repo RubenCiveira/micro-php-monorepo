@@ -1,6 +1,7 @@
 <?php
 namespace Register\Domain\Impl\Config;
 
+
 use Register\Domain\Port\Api\Config\Create\ConfigCreateUseCase;
 use Register\Domain\Port\Api\Config\Create\ConfigCreateRequest;
 use Register\Domain\Port\Api\Config\Create\ConfigCreateResponse;
