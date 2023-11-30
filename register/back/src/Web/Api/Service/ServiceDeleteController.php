@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Service\Delete\ServiceDeleteUseCase;
 use Register\Domain\Port\Api\Service\Delete\ServiceDeleteRequest;
 use Register\Domain\Port\Api\Service\Delete\ServiceDeleteResponse;
+use Register\Domain\Model\Ref\ServiceRef;
 
 class ServiceDeleteController {
   public function __construct(private readonly ServiceDeleteUseCase $usecase) {}
@@ -16,8 +17,7 @@ class ServiceDeleteController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): ServiceDeleteRequest {
-  $vo = new ServiceListRequest();
-  return $vo;
+  return new ServiceDeleteRequest(ref: new ServiceRef(uid: $args['uid']) );
   }
   private function toDto(ServiceDeleteResponse $response) {
     return $response;

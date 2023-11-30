@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Host\Delete\HostDeleteUseCase;
 use Register\Domain\Port\Api\Host\Delete\HostDeleteRequest;
 use Register\Domain\Port\Api\Host\Delete\HostDeleteResponse;
+use Register\Domain\Model\Ref\HostRef;
 
 class HostDeleteController {
   public function __construct(private readonly HostDeleteUseCase $usecase) {}
@@ -16,8 +17,7 @@ class HostDeleteController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): HostDeleteRequest {
-  $vo = new HostListRequest();
-  return $vo;
+  return new HostDeleteRequest(ref: new HostRef(uid: $args['uid']) );
   }
   private function toDto(HostDeleteResponse $response) {
     return $response;

@@ -6,6 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Register\Domain\Port\Api\Config\Delete\ConfigDeleteUseCase;
 use Register\Domain\Port\Api\Config\Delete\ConfigDeleteRequest;
 use Register\Domain\Port\Api\Config\Delete\ConfigDeleteResponse;
+use Register\Domain\Model\Ref\ConfigRef;
 
 class ConfigDeleteController {
   public function __construct(private readonly ConfigDeleteUseCase $usecase) {}
@@ -16,8 +17,7 @@ class ConfigDeleteController {
     return $response->withHeader('Content-Type', 'application/json');
   }
   private function toRequest(RequestInterface $request, $args): ConfigDeleteRequest {
-  $vo = new ConfigListRequest();
-  return $vo;
+  return new ConfigDeleteRequest(ref: new ConfigRef(uid: $args['uid']) );
   }
   private function toDto(ConfigDeleteResponse $response) {
     return $response;
