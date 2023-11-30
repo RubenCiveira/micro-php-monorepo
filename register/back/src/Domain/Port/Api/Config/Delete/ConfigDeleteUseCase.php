@@ -3,5 +3,5 @@ namespace Register\Domain\Port\Api\Config\Delete;
 
 
 interface ConfigDeleteUseCase {
-  public function Delete(ConfigDeleteRequest $request): ConfigDeleteResponse;
+  public function delete(ConfigDeleteRequest $request): ConfigDeleteResponse;
 }

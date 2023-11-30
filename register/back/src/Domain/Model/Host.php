@@ -6,7 +6,7 @@ use Register\Domain\Model\Builder\HostBuilder;
 use Register\Domain\Model\Ref\ServiceRef;
 
 class Host extends HostRef {
-  public static function builder() {
+  public static function builder(): HostBuilder {
     return new HostBuilder();
   }
   public readonly string $name;
@@ -20,10 +20,18 @@ class Host extends HostRef {
   }
   public function toBuilder(): HostBuilder {
     $builder = new HostBuilder();
-    $builder->uid( $this->uid);
-    $builder->name( $this->name);
-    $builder->service( $this->service);
-    $builder->version( $this->version);
+    if( $this->uid ) {
+      $builder->uid( $this->uid);
+    }
+    if( $this->name ) {
+      $builder->name( $this->name);
+    }
+    if( $this->service ) {
+      $builder->service( $this->service);
+    }
+    if( $this->version ) {
+      $builder->version( $this->version);
+    }
     return $builder;
   }
 }

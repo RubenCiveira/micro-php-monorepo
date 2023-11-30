@@ -11,7 +11,7 @@ class HostBuilder {
   private int $uid;
   private string $name;
   private ServiceRef $service;
-  private ?int $version;
+  private ?int $version = null;
   public function getUid(): int {
     return $this->uid;
   }

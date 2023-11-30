@@ -9,7 +9,7 @@ class ServiceBuilder {
   }
   private int $uid;
   private string $name;
-  private ?int $version;
+  private ?int $version = null;
   public function getUid(): int {
     return $this->uid;
   }

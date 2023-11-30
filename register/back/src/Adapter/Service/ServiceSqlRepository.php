@@ -71,7 +71,7 @@ class ServiceSqlRepository implements ServiceRepository {
     if( $filter ) {
       if( $filter->search) {
         $query .= ' and ( name like :search)';
-        $params['search'] = '%' . filter->search . '%';
+        $params['search'] = '%' . $filter->search . '%';
       }
     }
     return ['query' => 'SELECT * FROM service'
@@ -81,11 +81,11 @@ class ServiceSqlRepository implements ServiceRepository {
   }
   private function checkDuplicates(Service $entity) {
     $values = ['uid' => $entity->uid];
-    if( $this->pdo->exists('SELECT  uid from service where uid = :uid', $values) ) {
+    if( $this->db->exists('SELECT  uid from service where uid = :uid', $values) ) {
       throw new ConstraintException('not-unique', $values);
     }
     $values = ['name' => $entity->name];
-    if( $this->pdo->exists('SELECT  name from service where name = :name and uid != :uid', $values) ) {
+    if( $this->db->exists('SELECT  name from service where name = :name and uid != :uid', $values) ) {
       throw new ConstraintException('not-unique', ['name' => $entity->name]);
     }
   }

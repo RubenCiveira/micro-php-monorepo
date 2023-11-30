@@ -86,7 +86,7 @@ class ConfigSqlRepository implements ConfigRepository {
   }
   private function checkDuplicates(Config $entity) {
     $values = ['uid' => $entity->uid];
-    if( $this->pdo->exists('SELECT  uid from config where uid = :uid', $values) ) {
+    if( $this->db->exists('SELECT  uid from config where uid = :uid', $values) ) {
       throw new ConstraintException('not-unique', $values);
     }
   }

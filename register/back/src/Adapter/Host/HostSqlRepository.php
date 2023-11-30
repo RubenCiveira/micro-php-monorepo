@@ -84,11 +84,11 @@ class HostSqlRepository implements HostRepository {
   }
   private function checkDuplicates(Host $entity) {
     $values = ['uid' => $entity->uid];
-    if( $this->pdo->exists('SELECT  uid from host where uid = :uid', $values) ) {
+    if( $this->db->exists('SELECT  uid from host where uid = :uid', $values) ) {
       throw new ConstraintException('not-unique', $values);
     }
     $values = ['name' => $entity->name];
-    if( $this->pdo->exists('SELECT  name from host where name = :name and uid != :uid', $values) ) {
+    if( $this->db->exists('SELECT  name from host where name = :name and uid != :uid', $values) ) {
       throw new ConstraintException('not-unique', ['name' => $entity->name]);
     }
   }

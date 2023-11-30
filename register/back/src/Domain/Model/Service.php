@@ -5,7 +5,7 @@ use Register\Domain\Model\Ref\ServiceRef;
 use Register\Domain\Model\Builder\ServiceBuilder;
 
 class Service extends ServiceRef {
-  public static function builder() {
+  public static function builder(): ServiceBuilder {
     return new ServiceBuilder();
   }
   public readonly string $name;
@@ -17,9 +17,15 @@ class Service extends ServiceRef {
   }
   public function toBuilder(): ServiceBuilder {
     $builder = new ServiceBuilder();
-    $builder->uid( $this->uid);
-    $builder->name( $this->name);
-    $builder->version( $this->version);
+    if( $this->uid ) {
+      $builder->uid( $this->uid);
+    }
+    if( $this->name ) {
+      $builder->name( $this->name);
+    }
+    if( $this->version ) {
+      $builder->version( $this->version);
+    }
     return $builder;
   }
 }

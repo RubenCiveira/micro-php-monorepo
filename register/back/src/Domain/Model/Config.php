@@ -6,7 +6,7 @@ use Register\Domain\Model\Builder\ConfigBuilder;
 use Register\Domain\Model\Ref\ServiceRef;
 
 class Config extends ConfigRef {
-  public static function builder() {
+  public static function builder(): ConfigBuilder {
     return new ConfigBuilder();
   }
   public readonly ServiceRef $service;
@@ -22,11 +22,21 @@ class Config extends ConfigRef {
   }
   public function toBuilder(): ConfigBuilder {
     $builder = new ConfigBuilder();
-    $builder->uid( $this->uid);
-    $builder->service( $this->service);
-    $builder->property( $this->property);
-    $builder->value( $this->value);
-    $builder->version( $this->version);
+    if( $this->uid ) {
+      $builder->uid( $this->uid);
+    }
+    if( $this->service ) {
+      $builder->service( $this->service);
+    }
+    if( $this->property ) {
+      $builder->property( $this->property);
+    }
+    if( $this->value ) {
+      $builder->value( $this->value);
+    }
+    if( $this->version ) {
+      $builder->version( $this->version);
+    }
     return $builder;
   }
 }

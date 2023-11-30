@@ -2,7 +2,23 @@
 namespace Register\Domain\Model\Query;
 
 class ServiceFilter {
-  public function __construct(public readonly ?array $uids,
-              public readonly ?string $search) {
+  public static function builder(): ServiceFilterBuilder {
+    return new ServiceFilterBuilder();
+  }
+    public readonly ?array $uids;
+    public readonly ?string $search;
+  public function __construct(ServiceFilterBuilder $builder) {
+    $this->uids = $builder->getUids();
+    $this->search = $builder->getSearch();
+  }
+  public function toBuilder(): ServiceFilterBuilder {
+    $builder = new ServiceFilterBuilder();
+    if( $this->uids ) {
+      $builder->uids( $this->uids );
+    }
+    if( $this->search ) {
+      $builder->search( $this->search );
+    }
+    return $builder;
   }
 }

@@ -12,7 +12,7 @@ class ConfigBuilder {
   private ServiceRef $service;
   private string $property;
   private string $value;
-  private ?int $version;
+  private ?int $version = null;
   public function getUid(): int {
     return $this->uid;
   }

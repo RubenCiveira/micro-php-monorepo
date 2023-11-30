@@ -8,8 +8,10 @@ use Register\Domain\Port\Api\Service\List\ServiceListResponse;
 use Register\Domain\Port\Spi\Service\ServiceRepository;
 
 class ServiceListImpl implements ServiceListUseCase {
-  public function __construct(private readonly ServiceRepository $repository) {}
-  public function List(ServiceListRequest $request): ServiceListResponse {
-    return new ServiceListResponse(data: $this->repository->list($request->filter, $request->sort), next: null);
+  public function __construct(private readonly ServiceRepository $repository,
+            private readonly ServiceVisibilityFilter $visibilityFilter,
+           private readonly ServiceReadFilter $readFilter) {}
+  public function list(ServiceListRequest $request): ServiceListResponse {
+    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new ServiceListResponse(data: array_map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row), $result), next: null);
   }
 }

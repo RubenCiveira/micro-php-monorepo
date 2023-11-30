@@ -7,7 +7,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 require __DIR__ . '/../vendor/autoload.php';
 
 Context::registerDefinitions(require '../resources/starter/repository-definitions.php');
-Context::registerDefinitions(require '../resources/starter/service-hosts.php');
+Context::registerDefinitions(require '../resources/starter/web-definitions.php');
+Context::registerDefinitions(require '../resources/starter/service-definitions.php');
 
 $context = new WebContext('../', dirname($_SERVER['SCRIPT_NAME']).'/hosts');
 $context->start( function (\Slim\App $app, \Psr\Container\ContainerInterface $injector) {
