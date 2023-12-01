@@ -46,4 +46,12 @@ La operacion de edición esta habilitada a cualquier usuario autenticado.
 
 La operacion de borrado esta habilitada a cualquier usuario autenticado.
 
+=== Disable
+
+La operacion de disable esta habilitada a cualquier usuario autenticado.
+
+=== Enable
+
+La operacion de enable esta habilitada a cualquier usuario autenticado.
+
 

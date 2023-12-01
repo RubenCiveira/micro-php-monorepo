@@ -22,9 +22,10 @@ class ServiceSqlRepository implements ServiceRepository {
   }
   public function create(Service $entity): Service {
     try {
-      $this->db->execute('INSERT INTO service ( uid, name, version) VALUES ( :uid, :name, :version)',[
+      $this->db->execute('INSERT INTO service ( uid, name, enabled, version) VALUES ( :uid, :name, :enabled, :version)',[
            'uid' => $entity->uid,
            'name' => $entity->name,
+           'enabled' => $entity->enabled,
            'version' => 0
       ]);
     } catch(NotUniqueException $ex) {
@@ -37,9 +38,10 @@ class ServiceSqlRepository implements ServiceRepository {
   }
   public function update(Service $update): ?Service {
     try {
-      $result = $this->db->execute('UPDATE service SET name = :name , version = :version WHERE uid = :uid and version = :_lock_version', [
+      $result = $this->db->execute('UPDATE service SET name = :name , enabled = :enabled , version = :version WHERE uid = :uid and version = :_lock_version', [
            'uid' => $update->uid,
            'name' => $update->name,
+           'enabled' => $update->enabled,
            'version' => $update->version + 1,
            '_lock_version' => $update->version
       ]);
@@ -92,6 +94,7 @@ class ServiceSqlRepository implements ServiceRepository {
   private function mapper($row): Service{
     return Service::builder()->uid($row['uid'])
            ->name($row['name'])
+           ->enabled($row['enabled'])
            ->version($row['version'])->build();
   }
 }

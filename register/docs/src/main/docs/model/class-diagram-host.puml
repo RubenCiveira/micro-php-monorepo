@@ -5,12 +5,15 @@ title Clases para host
 class .Service{
 uid:integer
 name:string
+enabled:boolean
 version:integer
 list()
 retrieve()
 create()
 update()
 delete()
+disable()
+enable()
 }
 class .Host{
 uid:integer

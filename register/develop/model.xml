@@ -13,7 +13,15 @@
     <entity name="service" generator="uuid" id="uid" display="name">
         <property name="uid" type="xs:integer" unique="true" required="true" />
         <property name="name" type="xs:string" unique="true" required="true" />
+        <property name="enabled" type="xs:boolean" default="true" calculated="true"
+				description="Al deshabilitar una cuenta, sus usuario y dispositivos no pueden hacer login." />
         <facade type="crud" path="services">
+            <action name="disable" contextual="true" icon="visibility_off" display="enabled">
+				<set property="enabled" value="false" />
+			</action>
+			<action name="enable" contextual="true" icon="visibility" display="enabled">
+				<set property="enabled" value="true" />
+			</action>
         </facade>
     </entity>
     <entity name="host" generator="uid" id="uid" display="name">

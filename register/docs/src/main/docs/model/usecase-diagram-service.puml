@@ -10,6 +10,8 @@ a0 -> (Consulta)
 a0 -> (Creación)
 a0 -> (Edición)
 a0 -> (Borrado)
+a0 -> (Disable)
+a0 -> (Enable)
 footer Generado el %date("dd.MM.yyyy' a las 'HH:mm")
 @enduml
 

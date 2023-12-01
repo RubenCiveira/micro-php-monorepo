@@ -5,12 +5,15 @@ title Clases para config
 class .Service{
 uid:integer
 name:string
+enabled:boolean
 version:integer
 list()
 retrieve()
 create()
 update()
 delete()
+disable()
+enable()
 }
 class .Config{
 uid:integer

@@ -3,5 +3,7 @@ Uid* (integer)::
 El uid de service
 Name* (string)::
 El name de service
+Enabled (boolean)::
+Al deshabilitar una cuenta, sus usuario y dispositivos no pueden hacer login.
 Version (integer)::
 Campo con el número de version de service para controlar bloqueos optimistas

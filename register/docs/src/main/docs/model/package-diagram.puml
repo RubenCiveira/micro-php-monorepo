@@ -7,6 +7,8 @@ retrieve()
 create()
 update()
 delete()
+disable()
+enable()
 }
 
 class .Host{

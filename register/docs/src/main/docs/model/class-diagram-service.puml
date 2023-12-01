@@ -5,12 +5,15 @@ title Clases para service
 class .Service{
 uid:integer
 name:string
+enabled:boolean
 version:integer
 list()
 retrieve()
 create()
 update()
 delete()
+disable()
+enable()
 }
 
 footer Generado el %date("dd.MM.yyyy' a las 'HH:mm")

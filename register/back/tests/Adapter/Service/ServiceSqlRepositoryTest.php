@@ -15,9 +15,10 @@ final class ServiceSqlRepositoryTest extends TestCase {
     $entity = new Service();
     $pho = $this->createMock( SqlTemplate::class );
     $pho->method('execute')->willReturn( false );
-    $pho->expects($this->once())->method('execute')->with('INSERT INTO service ( uid, name, version) VALUES ( :uid, :name, :version)',[
+    $pho->expects($this->once())->method('execute')->with('INSERT INTO service ( uid, name, enabled, version) VALUES ( :uid, :name, :enabled, :version)',[
      'uid' => $entity->getUid(),
      'name' => $entity->getName(),
+     'enabled' => $entity->getEnabled(),
      'version' => $entity->getVersion()
     ]);
     $repo = new ServiceSqlRepository($pho);
