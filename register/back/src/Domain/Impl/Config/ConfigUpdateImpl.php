@@ -20,7 +20,8 @@ class ConfigUpdateImpl implements ConfigUpdateUseCase {
            private readonly ConfigReadFilter $readFilter,
            private readonly ConfigWriteFilter $writeFilter) {}
   public function update(ConfigUpdateRequest $request): ConfigUpdateResponse {
-    if( !$this->repository->exists($request->ref, $this->visibilityFilter->buildFilter($request->actor, ConfigFilter::builder()->build()) ) ) {
+    $original = $this->repository->retrieve($request->ref, $this->visibilityFilter->buildFilter($request->actor, ConfigFilter::builder()->build()) );
+    if( !$original ) {
         throw new NotFoundException($request->ref->uid);
     }
     if( $request->entity->service && !$this->serviceRepository->exists($request->entity->service, $this->serviceVisibility->buildFilter($request->actor, ServiceFilter::builder()->build()) )  ) {

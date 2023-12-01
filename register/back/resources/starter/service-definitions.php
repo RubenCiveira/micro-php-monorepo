@@ -2,6 +2,8 @@
 return function($context) {
   $context->bind(Register\Domain\Impl\Service\ServiceVisibilityFilter::class);
   $context->bind(Register\Domain\Impl\Service\ServiceReadFilter::class);
+  $context->bind(Register\Domain\Impl\Service\ServicePropertyEnabledCalculator::class);
+  $context->bind(Register\Domain\Impl\Service\ServicePropertiesCalculator::class);
   $context->bind(Register\Domain\Impl\Service\ServiceWriteFilter::class);
   $context->bind(Register\Domain\Port\Api\Service\List\ServiceListUseCase::class)->to(Register\Domain\Impl\Service\ServiceListImpl::class);
   $context->bind(Register\Domain\Port\Api\Service\Create\ServiceCreateUseCase::class)->to(Register\Domain\Impl\Service\ServiceCreateImpl::class);

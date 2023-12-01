@@ -20,7 +20,8 @@ class HostUpdateImpl implements HostUpdateUseCase {
            private readonly HostReadFilter $readFilter,
            private readonly HostWriteFilter $writeFilter) {}
   public function update(HostUpdateRequest $request): HostUpdateResponse {
-    if( !$this->repository->exists($request->ref, $this->visibilityFilter->buildFilter($request->actor, HostFilter::builder()->build()) ) ) {
+    $original = $this->repository->retrieve($request->ref, $this->visibilityFilter->buildFilter($request->actor, HostFilter::builder()->build()) );
+    if( !$original ) {
         throw new NotFoundException($request->ref->uid);
     }
     if( $request->entity->service && !$this->serviceRepository->exists($request->entity->service, $this->serviceVisibility->buildFilter($request->actor, ServiceFilter::builder()->build()) )  ) {

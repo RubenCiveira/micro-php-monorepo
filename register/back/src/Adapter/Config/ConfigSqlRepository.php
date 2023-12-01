@@ -3,6 +3,7 @@ namespace Register\Adapter\Config;
 
 use Closure;
 use Civi\Micro\Sql\SqlTemplate;
+use Civi\Micro\Sql\SqlParam;
 use Register\Domain\Port\Spi\Config\ConfigRepository;
 use Register\Domain\Model\Config;
 use Register\Domain\Model\Query\ConfigFilter;
@@ -24,29 +25,30 @@ class ConfigSqlRepository implements ConfigRepository {
   public function create(Config $entity): Config {
     try {
       $this->db->execute('INSERT INTO config ( uid, service, property, value, version) VALUES ( :uid, :service, :property, :value, :version)',[
-           'uid' => $entity->uid,
-           'service' => $entity->service?->uid,
-           'property' => $entity->property,
-           'value' => $entity->value,
-           'version' => 0
+           new SqlParam(name: 'uid', value: $entity->uid, type: SqlParam::INT),
+           new SqlParam(name: 'service', value: $entity->service?->uid, type: SqlParam::STR),
+           new SqlParam(name: 'property', value: $entity->property, type: SqlParam::STR),
+           new SqlParam(name: 'value', value: $entity->value, type: SqlParam::STR),
+           new SqlParam(name: 'version', value: 0, type: SqlParam::INT)
       ]);
     } catch(NotUniqueException $ex) {
       $this->checkDuplicates( $entity );
     }
     return $entity->toBuilder()->version( 0 )->build();
   }
-  public function retrieve(ConfigRef $entity): ?Config {
-    return $this->db->findOne('SELECT * FROM config where uid = :uid',['uid' => $entity->uid], fn($row) => $this->mapper($row));
+  public function retrieve(ConfigRef $ref, ?ConfigFilter $filter=null): ?Config {
+    $sqlFilter = $this->filter($ref, $filter, null);
+    return $this->db->findOne($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row));
   }
   public function update(Config $update): ?Config {
     try {
       $result = $this->db->execute('UPDATE config SET service = :service , property = :property , value = :value , version = :version WHERE uid = :uid and version = :_lock_version', [
-           'uid' => $update->uid,
-           'service' => $update->service?->uid,
-           'property' => $update->property,
-           'value' => $update->value,
-           'version' => $update->version + 1,
-           '_lock_version' => $update->version
+           new SqlParam(name: 'uid', value: $update->uid, type: SqlParam::INT),
+           new SqlParam(name: 'service', value: $update->service?->uid, type: SqlParam::INT),
+           new SqlParam(name: 'property', value: $update->property, type: SqlParam::STR),
+           new SqlParam(name: 'value', value: $update->value, type: SqlParam::STR),
+           new SqlParam(name: 'version', value: $update->version + 1, type: SqlParam::INT),
+           new SqlParam(name: '_lock_version', value: $update->version, type: SqlParam::INT)
       ]);
       if( !$result && $this->db->exists('select uid from config where uid = :uid', ['uid' => $update->uid ]) ) {
         throw new OptimistLockException($update->uid, $update->version);
@@ -58,11 +60,11 @@ class ConfigSqlRepository implements ConfigRepository {
     }
     return $update->toBuilder()->version( $update->version + 1 )->build();
   }
-  public function delete(ConfigRef $entity): bool {
+  public function delete(ConfigRef $ref): bool {
     return $this->db->execute('DELETE FROM config where uid = :uid',['uid' => $entity->uid]);
   }
-  public function exists(ConfigRef $entity, ?ConfigFilter $filter): bool {
-    $sqlFilter = $this->filter($entity, $filter, null);
+  public function exists(ConfigRef $ref, ?ConfigFilter $filter=null): bool {
+    $sqlFilter = $this->filter($ref, $filter, null);
     return $this->db->exists($sqlFilter['query'], $sqlFilter['params']);
   }
   private function filter(?ConfigRef $ref,?ConfigFilter $filter,?ConfigSort $sort) {
@@ -71,12 +73,12 @@ class ConfigSqlRepository implements ConfigRepository {
     $params = [];
     if( $ref && $ref->uid ) {
       $query .= ' and uid = :uid';
-      $params['uid'] = $ref->uid;
+      $params[] = new SqlParam( name: 'uid', value: $ref->uid, type: SqlParam::INT);
     }
     if( $filter ) {
       if( $filter->service) {
         $query .= ' and service = :service';
-        $params['service'] = $filter->service;
+        $params[] = new SqlParam(name: 'service', value: $filter->service, type: SqlParam::STR);
       }
     }
     return ['query' => 'SELECT * FROM config'

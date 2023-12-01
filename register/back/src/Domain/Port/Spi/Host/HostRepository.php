@@ -9,8 +9,8 @@ use Register\Domain\Model\Ref\HostRef;
 interface HostRepository {
   public function create(Host $entity): Host;
   public function list(?HostFilter $filter, ?HostSort $sort): array;
-  public function retrieve(HostRef $filter): ?Host;
+  public function retrieve(HostRef $ref, ?HostFilter $filter): ?Host;
   public function update(Host $entity): ?Host;
-  public function delete(HostRef $entity): bool;
-  public function exists(HostRef $entity, ?HostFilter $filter): bool;
+  public function delete(HostRef $ref): bool;
+  public function exists(HostRef $ref, ?HostFilter $filter): bool;
 }
