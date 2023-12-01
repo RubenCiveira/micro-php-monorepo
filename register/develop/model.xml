@@ -40,4 +40,23 @@
         <facade type="crud" path="configs">
         </facade>
     </entity>
+    <entity name="agent" generator="uid" id="uid" display="name">
+        <property name="uid" type="xs:integer" unique="true" required="true" />
+        <property name="name" type="xs:string" unique="true" required="true" />
+        <property name="groups" type="tns:agent-execution-group[]" reverse="agent" join="group" />
+        <facade type="crud" path="agents">
+        </facade>
+    </entity>
+    <entity name="execution-group" generator="uid" id="uid" display="name">
+        <property name="uid" type="xs:integer" unique="true" required="true" />
+        <property name="name" type="xs:string" unique="true" required="true" />
+
+        <facade type="crud" path="execution-groups">
+        </facade>
+    </entity>
+    <entity name="agent-execution-group" generator="uid" id="uid" display="uid">
+        <property name="uid" type="xs:integer" unique="true" required="true" />
+        <property name="agent" type="tns:agent" required="true" />
+        <property name="group" type="tns:execution-group" required="true" />
+    </entity>
 </work-project>

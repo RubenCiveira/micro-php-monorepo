@@ -1,5 +1,13 @@
 <?php
 return function($context) {
+  $context->bind(Register\Domain\Impl\Agent\AgentVisibilityFilter::class);
+  $context->bind(Register\Domain\Impl\Agent\AgentReadFilter::class);
+  $context->bind(Register\Domain\Impl\Agent\AgentWriteFilter::class);
+  $context->bind(Register\Domain\Port\Api\Agent\List\AgentListUseCase::class)->to(Register\Domain\Impl\Agent\AgentListImpl::class);
+  $context->bind(Register\Domain\Port\Api\Agent\Create\AgentCreateUseCase::class)->to(Register\Domain\Impl\Agent\AgentCreateImpl::class);
+  $context->bind(Register\Domain\Port\Api\Agent\Retrieve\AgentRetrieveUseCase::class)->to(Register\Domain\Impl\Agent\AgentRetrieveImpl::class);
+  $context->bind(Register\Domain\Port\Api\Agent\Update\AgentUpdateUseCase::class)->to(Register\Domain\Impl\Agent\AgentUpdateImpl::class);
+  $context->bind(Register\Domain\Port\Api\Agent\Delete\AgentDeleteUseCase::class)->to(Register\Domain\Impl\Agent\AgentDeleteImpl::class);
   $context->bind(Register\Domain\Impl\Service\ServiceVisibilityFilter::class);
   $context->bind(Register\Domain\Impl\Service\ServiceReadFilter::class);
   $context->bind(Register\Domain\Impl\Service\ServiceWriteFilter::class);
@@ -28,4 +36,12 @@ return function($context) {
   $context->bind(Register\Domain\Port\Api\Config\Retrieve\ConfigRetrieveUseCase::class)->to(Register\Domain\Impl\Config\ConfigRetrieveImpl::class);
   $context->bind(Register\Domain\Port\Api\Config\Update\ConfigUpdateUseCase::class)->to(Register\Domain\Impl\Config\ConfigUpdateImpl::class);
   $context->bind(Register\Domain\Port\Api\Config\Delete\ConfigDeleteUseCase::class)->to(Register\Domain\Impl\Config\ConfigDeleteImpl::class);
+  $context->bind(Register\Domain\Impl\ExecutionGroup\ExecutionGroupVisibilityFilter::class);
+  $context->bind(Register\Domain\Impl\ExecutionGroup\ExecutionGroupReadFilter::class);
+  $context->bind(Register\Domain\Impl\ExecutionGroup\ExecutionGroupWriteFilter::class);
+  $context->bind(Register\Domain\Port\Api\ExecutionGroup\List\ExecutionGroupListUseCase::class)->to(Register\Domain\Impl\ExecutionGroup\ExecutionGroupListImpl::class);
+  $context->bind(Register\Domain\Port\Api\ExecutionGroup\Create\ExecutionGroupCreateUseCase::class)->to(Register\Domain\Impl\ExecutionGroup\ExecutionGroupCreateImpl::class);
+  $context->bind(Register\Domain\Port\Api\ExecutionGroup\Retrieve\ExecutionGroupRetrieveUseCase::class)->to(Register\Domain\Impl\ExecutionGroup\ExecutionGroupRetrieveImpl::class);
+  $context->bind(Register\Domain\Port\Api\ExecutionGroup\Update\ExecutionGroupUpdateUseCase::class)->to(Register\Domain\Impl\ExecutionGroup\ExecutionGroupUpdateImpl::class);
+  $context->bind(Register\Domain\Port\Api\ExecutionGroup\Delete\ExecutionGroupDeleteUseCase::class)->to(Register\Domain\Impl\ExecutionGroup\ExecutionGroupDeleteImpl::class);
 };
