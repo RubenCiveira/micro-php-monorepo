@@ -8,8 +8,8 @@ return function($context) {
   $context->bind(Register\Domain\Port\Api\Service\Retrieve\ServiceRetrieveUseCase::class)->to(Register\Domain\Impl\Service\ServiceRetrieveImpl::class);
   $context->bind(Register\Domain\Port\Api\Service\Update\ServiceUpdateUseCase::class)->to(Register\Domain\Impl\Service\ServiceUpdateImpl::class);
   $context->bind(Register\Domain\Port\Api\Service\Delete\ServiceDeleteUseCase::class)->to(Register\Domain\Impl\Service\ServiceDeleteImpl::class);
-  $context->bind(Register\Domain\Port\Api\Service\ActionDisable\ServiceActionDisableUseCase::class)->to(Register\Domain\Impl\Service\ServiceActionDisableImpl::class);
-  $context->bind(Register\Domain\Port\Api\Service\ActionEnable\ServiceActionEnableUseCase::class)->to(Register\Domain\Impl\Service\ServiceActionEnableImpl::class);
+  $context->bind(Register\Domain\Port\Api\Service\Disable\ServiceDisableUseCase::class)->to(Register\Domain\Impl\Service\ServiceDisableImpl::class);
+  $context->bind(Register\Domain\Port\Api\Service\Enable\ServiceEnableUseCase::class)->to(Register\Domain\Impl\Service\ServiceEnableImpl::class);
   $context->bind(Register\Domain\Impl\Service\ServicePropertyEnabledCalculator::class);
   $context->bind(Register\Domain\Impl\Service\ServicePropertiesCalculator::class);
   $context->bind(Register\Domain\Impl\Host\HostVisibilityFilter::class);
