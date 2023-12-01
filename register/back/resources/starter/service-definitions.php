@@ -2,14 +2,16 @@
 return function($context) {
   $context->bind(Register\Domain\Impl\Service\ServiceVisibilityFilter::class);
   $context->bind(Register\Domain\Impl\Service\ServiceReadFilter::class);
-  $context->bind(Register\Domain\Impl\Service\ServicePropertyEnabledCalculator::class);
-  $context->bind(Register\Domain\Impl\Service\ServicePropertiesCalculator::class);
   $context->bind(Register\Domain\Impl\Service\ServiceWriteFilter::class);
   $context->bind(Register\Domain\Port\Api\Service\List\ServiceListUseCase::class)->to(Register\Domain\Impl\Service\ServiceListImpl::class);
   $context->bind(Register\Domain\Port\Api\Service\Create\ServiceCreateUseCase::class)->to(Register\Domain\Impl\Service\ServiceCreateImpl::class);
   $context->bind(Register\Domain\Port\Api\Service\Retrieve\ServiceRetrieveUseCase::class)->to(Register\Domain\Impl\Service\ServiceRetrieveImpl::class);
   $context->bind(Register\Domain\Port\Api\Service\Update\ServiceUpdateUseCase::class)->to(Register\Domain\Impl\Service\ServiceUpdateImpl::class);
   $context->bind(Register\Domain\Port\Api\Service\Delete\ServiceDeleteUseCase::class)->to(Register\Domain\Impl\Service\ServiceDeleteImpl::class);
+  $context->bind(Register\Domain\Port\Api\Service\ActionDisable\ServiceActionDisableUseCase::class)->to(Register\Domain\Impl\Service\ServiceActionDisableImpl::class);
+  $context->bind(Register\Domain\Port\Api\Service\ActionEnable\ServiceActionEnableUseCase::class)->to(Register\Domain\Impl\Service\ServiceActionEnableImpl::class);
+  $context->bind(Register\Domain\Impl\Service\ServicePropertyEnabledCalculator::class);
+  $context->bind(Register\Domain\Impl\Service\ServicePropertiesCalculator::class);
   $context->bind(Register\Domain\Impl\Host\HostVisibilityFilter::class);
   $context->bind(Register\Domain\Impl\Host\HostReadFilter::class);
   $context->bind(Register\Domain\Impl\Host\HostWriteFilter::class);
