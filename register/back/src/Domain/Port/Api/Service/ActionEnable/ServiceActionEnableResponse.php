@@ -1,4 +1,4 @@
-≠<?php
+<?php
 namespace Register\Domain\Port\Api\Service\ActionEnable;
 
 use Register\Domain\Model\Service;
