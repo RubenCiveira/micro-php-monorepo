@@ -37,4 +37,14 @@ $context->start( function (\Slim\App $app, \Psr\Container\ContainerInterface $in
         $controller->delete($request, $response, $args);
         return $response;
     });
+    $app->patch('/{uid}/disable', function (Request $request, Response $response, $args) use($injector) {
+        $controller = $injector->get(\Register\Web\Api\Service\ServiceDisableController::class);
+        $controller->disable($request, $response, $args);
+        return $response;
+    });
+    $app->patch('/{uid}/enable', function (Request $request, Response $response, $args) use($injector) {
+        $controller = $injector->get(\Register\Web\Api\Service\ServiceEnableController::class);
+        $controller->enable($request, $response, $args);
+        return $response;
+    });
 });
