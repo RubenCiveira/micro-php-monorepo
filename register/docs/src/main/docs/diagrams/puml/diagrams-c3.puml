@@ -242,9 +242,12 @@ System_Boundary(c2, "Backend") {
     Container(backend_api_, "Rest api", "Java", "Procesamiento de los datos", $sprite="java")
     Container(backend_adapter_, "Adaptador", "Java", "Procesamiento de los datos", $sprite="java")
     System_Boundary(backend_domain_, "Dominio") {
+      Container(entity_agent, "agent", "Java", "agent")
       Container(entity_service, "service", "Java", "service")
       Container(entity_host, "host", "Java", "host")
+      Container(entity_agent_execution_group, "agent execution group", "Java", "agent-execution-g...")
       Container(entity_config, "config", "Java", "config")
+      Container(entity_execution_group, "execution group", "Java", "execution-group")
     }
   }
 }
@@ -253,7 +256,10 @@ ContainerDb(redis, "cache", "Redis cache", "genera una cache de bbdd", $sprite="
 SystemQueue(rabbitmq, "queue", "Rabbit Mq", "Notifica eventos", $sprite="rabbitmq")
 
 Rel(user, web_app, "User", "http")
+Rel(entity_agent, entity_execution_group, "groups", "include")
 Rel(entity_host, entity_service, "service", "include")
+Rel(entity_agent_execution_group, entity_agent, "agent", "include")
+Rel(entity_agent_execution_group, entity_execution_group, "group", "include")
 Rel(entity_config, entity_service, "service", "include")
 Rel(web_app, backend_api_, "Rest connection", "Rest")
 Rel(backend_adapter_, database, "Read/Write data", "jpa")

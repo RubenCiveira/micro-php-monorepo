@@ -12,6 +12,6 @@ class ServiceListImpl implements ServiceListUseCase {
             private readonly ServiceVisibilityFilter $visibilityFilter,
            private readonly ServiceReadFilter $readFilter) {}
   public function list(ServiceListRequest $request): ServiceListResponse {
-    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new ServiceListResponse(data: array_map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row), $result), next: null);
+    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new ServiceListResponse(data: $result->map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row)), next: null);
   }
 }

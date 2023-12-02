@@ -9,6 +9,7 @@ use Register\Domain\Model\ExecutionGroup;
 use Register\Domain\Model\Query\ExecutionGroupFilter;
 use Register\Domain\Model\Query\ExecutionGroupSort;
 use Register\Domain\Model\Ref\ExecutionGroupRef;
+use Register\Domain\Model\List\ExecutionGroupList;
 use Civi\Micro\Exception\OptimistLockException;
 use Civi\Micro\Exception\NotFoundException;
 use Civi\Micro\Sql\NotUniqueException;
@@ -17,9 +18,9 @@ use Civi\Micro\Exception\ConstraintException;
 
 class ExecutionGroupSqlRepository implements ExecutionGroupRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(?ExecutionGroupFilter $filter, ?ExecutionGroupSort $sort): array {
+  public function list(?ExecutionGroupFilter $filter, ?ExecutionGroupSort $sort): ExecutionGroupList {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
+    return new ExecutionGroupList( $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) ) );
   }
   public function create(ExecutionGroup $entity): ExecutionGroup {
     try {
@@ -71,6 +72,10 @@ class ExecutionGroupSqlRepository implements ExecutionGroupRepository {
       $params[] = new SqlParam( name: 'uid', value: $ref->uid, type: SqlParam::INT);
     }
     if( $filter ) {
+      if( $filter->uids ) {
+        $query .= ' and uid in (:uids)';
+        $params[] = new SqlParam(name:'uids', value: $filter->uids, type: SqlParam::INT );
+      }
       if( $filter->search) {
         $query .= ' and ( name like :search)';
         $params[] = new SqlParam(name:'search', value: '%'. $filter->search . '%', type: SqlType::STR);

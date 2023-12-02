@@ -9,6 +9,7 @@ use Register\Domain\Model\Config;
 use Register\Domain\Model\Query\ConfigFilter;
 use Register\Domain\Model\Query\ConfigSort;
 use Register\Domain\Model\Ref\ConfigRef;
+use Register\Domain\Model\List\ConfigList;
 use Civi\Micro\Exception\OptimistLockException;
 use Civi\Micro\Exception\NotFoundException;
 use Civi\Micro\Sql\NotUniqueException;
@@ -18,9 +19,9 @@ use Register\Domain\Model\Ref\ServiceRef;
 
 class ConfigSqlRepository implements ConfigRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(?ConfigFilter $filter, ?ConfigSort $sort): array {
+  public function list(?ConfigFilter $filter, ?ConfigSort $sort): ConfigList {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
+    return new ConfigList( $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) ) );
   }
   public function create(Config $entity): Config {
     try {

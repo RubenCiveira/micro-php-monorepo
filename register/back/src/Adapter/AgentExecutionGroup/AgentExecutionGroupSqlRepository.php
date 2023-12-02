@@ -9,6 +9,7 @@ use Register\Domain\Model\AgentExecutionGroup;
 use Register\Domain\Model\Query\AgentExecutionGroupFilter;
 use Register\Domain\Model\Query\AgentExecutionGroupSort;
 use Register\Domain\Model\Ref\AgentExecutionGroupRef;
+use Register\Domain\Model\List\AgentExecutionGroupList;
 use Civi\Micro\Exception\OptimistLockException;
 use Civi\Micro\Exception\NotFoundException;
 use Civi\Micro\Sql\NotUniqueException;
@@ -19,9 +20,9 @@ use Register\Domain\Model\Ref\ExecutionGroupRef;
 
 class AgentExecutionGroupSqlRepository implements AgentExecutionGroupRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(?AgentExecutionGroupFilter $filter, ?AgentExecutionGroupSort $sort): array {
+  public function list(?AgentExecutionGroupFilter $filter, ?AgentExecutionGroupSort $sort): AgentExecutionGroupList {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
+    return new AgentExecutionGroupList( $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) ) );
   }
   public function create(AgentExecutionGroup $entity): AgentExecutionGroup {
     try {

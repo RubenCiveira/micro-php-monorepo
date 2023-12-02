@@ -9,6 +9,7 @@ use Register\Domain\Model\Service;
 use Register\Domain\Model\Query\ServiceFilter;
 use Register\Domain\Model\Query\ServiceSort;
 use Register\Domain\Model\Ref\ServiceRef;
+use Register\Domain\Model\List\ServiceList;
 use Civi\Micro\Exception\OptimistLockException;
 use Civi\Micro\Exception\NotFoundException;
 use Civi\Micro\Sql\NotUniqueException;
@@ -17,9 +18,9 @@ use Civi\Micro\Exception\ConstraintException;
 
 class ServiceSqlRepository implements ServiceRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(?ServiceFilter $filter, ?ServiceSort $sort): array {
+  public function list(?ServiceFilter $filter, ?ServiceSort $sort): ServiceList {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
+    return new ServiceList( $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) ) );
   }
   public function create(Service $entity): Service {
     try {
@@ -73,6 +74,10 @@ class ServiceSqlRepository implements ServiceRepository {
       $params[] = new SqlParam( name: 'uid', value: $ref->uid, type: SqlParam::INT);
     }
     if( $filter ) {
+      if( $filter->uids ) {
+        $query .= ' and uid in (:uids)';
+        $params[] = new SqlParam(name:'uids', value: $filter->uids, type: SqlParam::INT );
+      }
       if( $filter->search) {
         $query .= ' and ( name like :search)';
         $params[] = new SqlParam(name:'search', value: '%'. $filter->search . '%', type: SqlType::STR);

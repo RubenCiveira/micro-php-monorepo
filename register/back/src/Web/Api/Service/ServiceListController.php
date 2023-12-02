@@ -24,6 +24,6 @@ class ServiceListController {
     return new ServiceListRequest(actor: $actorRequest, filter: ServiceFilter::builder()->build(), sort: new ServiceSort());
   }
   private function toDto(ServiceListResponse $response) {
-    return $response;
+    return ['data' => $response->data->toArray(), 'next' => $response->next];
   }
 }

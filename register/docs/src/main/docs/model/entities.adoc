@@ -19,7 +19,10 @@ include::/package-diagram.puml[]
 
 :leveloffset: +2
 
+include::/entity-agent.adoc[]
+include::/entity-agent-execution-group.adoc[]
 include::/entity-config.adoc[]
+include::/entity-execution-group.adoc[]
 include::/entity-host.adoc[]
 include::/entity-service.adoc[]
 

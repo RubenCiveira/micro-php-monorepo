@@ -17,6 +17,6 @@ class ConfigListImpl implements ConfigListUseCase {
             private readonly ConfigVisibilityFilter $visibilityFilter,
            private readonly ConfigReadFilter $readFilter) {}
   public function list(ConfigListRequest $request): ConfigListResponse {
-    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new ConfigListResponse(data: array_map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row), $result), next: null);
+    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new ConfigListResponse(data: $result->map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row)), next: null);
   }
 }

@@ -9,6 +9,7 @@ use Register\Domain\Model\Host;
 use Register\Domain\Model\Query\HostFilter;
 use Register\Domain\Model\Query\HostSort;
 use Register\Domain\Model\Ref\HostRef;
+use Register\Domain\Model\List\HostList;
 use Civi\Micro\Exception\OptimistLockException;
 use Civi\Micro\Exception\NotFoundException;
 use Civi\Micro\Sql\NotUniqueException;
@@ -18,9 +19,9 @@ use Register\Domain\Model\Ref\ServiceRef;
 
 class HostSqlRepository implements HostRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(?HostFilter $filter, ?HostSort $sort): array {
+  public function list(?HostFilter $filter, ?HostSort $sort): HostList {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
+    return new HostList( $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) ) );
   }
   public function create(Host $entity): Host {
     try {

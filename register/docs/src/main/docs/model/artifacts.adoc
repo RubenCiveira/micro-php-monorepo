@@ -19,7 +19,10 @@ include::/package-diagram.puml[]
 
 :leveloffset: +2
 
+include::/artifact-agent.adoc[]
+include::/artifact-agent-execution-group.adoc[]
 include::/artifact-config.adoc[]
+include::/artifact-execution-group.adoc[]
 include::/artifact-host.adoc[]
 include::/artifact-service.adoc[]
 

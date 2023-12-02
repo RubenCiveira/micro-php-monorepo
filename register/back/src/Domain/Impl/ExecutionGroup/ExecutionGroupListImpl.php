@@ -12,6 +12,6 @@ class ExecutionGroupListImpl implements ExecutionGroupListUseCase {
             private readonly ExecutionGroupVisibilityFilter $visibilityFilter,
            private readonly ExecutionGroupReadFilter $readFilter) {}
   public function list(ExecutionGroupListRequest $request): ExecutionGroupListResponse {
-    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new ExecutionGroupListResponse(data: array_map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row), $result), next: null);
+    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new ExecutionGroupListResponse(data: $result->map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row)), next: null);
   }
 }

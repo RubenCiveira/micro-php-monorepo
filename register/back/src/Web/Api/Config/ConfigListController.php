@@ -25,6 +25,6 @@ class ConfigListController {
     return new ConfigListRequest(actor: $actorRequest, filter: ConfigFilter::builder()->service( null )->build(), sort: new ConfigSort());
   }
   private function toDto(ConfigListResponse $response) {
-    return $response;
+    return ['data' => $response->data->toArray(), 'next' => $response->next];
   }
 }

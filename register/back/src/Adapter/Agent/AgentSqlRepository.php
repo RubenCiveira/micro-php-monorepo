@@ -9,6 +9,7 @@ use Register\Domain\Model\Agent;
 use Register\Domain\Model\Query\AgentFilter;
 use Register\Domain\Model\Query\AgentSort;
 use Register\Domain\Model\Ref\AgentRef;
+use Register\Domain\Model\List\AgentList;
 use Civi\Micro\Exception\OptimistLockException;
 use Civi\Micro\Exception\NotFoundException;
 use Civi\Micro\Sql\NotUniqueException;
@@ -17,9 +18,9 @@ use Civi\Micro\Exception\ConstraintException;
 
 class AgentSqlRepository implements AgentRepository {
   public function __construct(private readonly SqlTemplate $db) {}
-  public function list(?AgentFilter $filter, ?AgentSort $sort): array {
+  public function list(?AgentFilter $filter, ?AgentSort $sort): AgentList {
     $sqlFilter = $this->filter(null, $filter, $sort);
-    return $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) );
+    return new AgentList( $this->db->query($sqlFilter['query'], $sqlFilter['params'], fn($row) => $this->mapper($row) ) );
   }
   public function create(Agent $entity): Agent {
     try {
@@ -29,6 +30,7 @@ class AgentSqlRepository implements AgentRepository {
            new SqlParam(name: 'groups', value: $entity->groups?->uid, type: SqlParam::STR),
            new SqlParam(name: 'version', value: 0, type: SqlParam::INT)
       ]);
+      $this->saveChilds($entity);
     } catch(NotUniqueException $ex) {
       $this->checkDuplicates( $entity );
     }
@@ -51,6 +53,7 @@ class AgentSqlRepository implements AgentRepository {
       } else if(!$result) {
         throw new NotFoundException($update->uid);
       }
+      $this->saveChilds($entity);
     } catch(NotUniqueException $ex) {
       $this->checkDuplicates( $entity );
     }
@@ -72,6 +75,10 @@ class AgentSqlRepository implements AgentRepository {
       $params[] = new SqlParam( name: 'uid', value: $ref->uid, type: SqlParam::INT);
     }
     if( $filter ) {
+      if( $filter->uids ) {
+        $query .= ' and uid in (:uids)';
+        $params[] = new SqlParam(name:'uids', value: $filter->uids, type: SqlParam::INT );
+      }
       if( $filter->search) {
         $query .= ' and ( name like :search)';
         $params[] = new SqlParam(name:'search', value: '%'. $filter->search . '%', type: SqlType::STR);
@@ -96,6 +103,8 @@ class AgentSqlRepository implements AgentRepository {
     return Agent::builder()->uid($row['uid'])
            ->name($row['name'])
            ->version($row['version'])->build();
+  }
+  private function saveChilds(Agent $paremt) {
   }
 }
 

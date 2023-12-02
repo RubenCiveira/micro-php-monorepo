@@ -17,6 +17,6 @@ class HostListImpl implements HostListUseCase {
             private readonly HostVisibilityFilter $visibilityFilter,
            private readonly HostReadFilter $readFilter) {}
   public function list(HostListRequest $request): HostListResponse {
-    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new HostListResponse(data: array_map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row), $result), next: null);
+    $result = $this->repository->list( $this->visibilityFilter->buildFilter($request->actor, $request->filter), $request->sort);    return new HostListResponse(data: $result->map( fn($row) => $this->readFilter->transformToOutput($request->actor, $row)), next: null);
   }
 }
