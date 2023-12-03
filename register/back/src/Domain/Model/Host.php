@@ -20,16 +20,16 @@ class Host extends HostRef {
   }
   public function toBuilder(): HostBuilder {
     $builder = new HostBuilder();
-    if( $this->uid ) {
+    if( isset($this->uid) ) {
       $builder->uid( $this->uid);
     }
-    if( $this->name ) {
+    if( isset($this->name) ) {
       $builder->name( $this->name);
     }
-    if( $this->service ) {
+    if( isset($this->service) ) {
       $builder->service( $this->service);
     }
-    if( $this->version ) {
+    if( isset($this->version) ) {
       $builder->version( $this->version);
     }
     return $builder;

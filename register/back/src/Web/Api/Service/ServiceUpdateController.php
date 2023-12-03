@@ -7,9 +7,8 @@ use Register\Web\Service\IdentifyService;
 use Register\Domain\Port\Api\Service\Update\ServiceUpdateUseCase;
 use Register\Domain\Port\Api\Service\Update\ServiceUpdateRequest;
 use Register\Domain\Port\Api\Service\Update\ServiceUpdateResponse;
-use Register\Domain\Model\Ref\ServiceRef;
 use Register\Domain\Model\Service;
-
+use Register\Domain\Model\Ref\ServiceRef;
 class ServiceUpdateController {
   public function __construct(private readonly ServiceUpdateUseCase $usecase,
                               private readonly IdentifyService $identity) {}
@@ -22,11 +21,12 @@ class ServiceUpdateController {
   private function toRequest(RequestInterface $request, $args): ServiceUpdateRequest {
     $actorRequest = $this->identity->identifyRequest($request);
     $row = $request->getParsedBody();
-    return new ServiceUpdateRequest(actor: $actorRequest, ref: new ServiceRef(uid: $args['uid']), entity: Service::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
-             ->name( isset($row['name']) ? $row['name'] : null)
-             ->version( isset($row['version']) ? $row['version'] : null)->build());
+    $entity = Service::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+                 ->name( isset($row['name']) ? $row['name'] : null)
+                 ->version( isset($row['version']) ? $row['version'] : 0)->build();
+    return new ServiceUpdateRequest(actor: $actorRequest, ref: new ServiceRef(uid: $args['uid']), entity: $entity);
   }
   private function toDto(ServiceUpdateResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

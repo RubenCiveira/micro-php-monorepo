@@ -21,16 +21,16 @@ class AgentExecutionGroup extends AgentExecutionGroupRef {
   }
   public function toBuilder(): AgentExecutionGroupBuilder {
     $builder = new AgentExecutionGroupBuilder();
-    if( $this->uid ) {
+    if( isset($this->uid) ) {
       $builder->uid( $this->uid);
     }
-    if( $this->agent ) {
+    if( isset($this->agent) ) {
       $builder->agent( $this->agent);
     }
-    if( $this->group ) {
+    if( isset($this->group) ) {
       $builder->group( $this->group);
     }
-    if( $this->version ) {
+    if( isset($this->version) ) {
       $builder->version( $this->version);
     }
     return $builder;

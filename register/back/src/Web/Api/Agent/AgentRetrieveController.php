@@ -23,6 +23,6 @@ class AgentRetrieveController {
     return new AgentRetrieveRequest(actor: $actorRequest, ref: new AgentRef(uid: $args['uid'] ));
   }
   private function toDto(AgentRetrieveResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

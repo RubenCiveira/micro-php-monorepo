@@ -3,7 +3,7 @@ namespace Register\Domain\Model\List;
 
 use Register\Domain\Model\Agent;
 
-class AgentList extends \ArrayIterator {
+class AgentList extends \ArrayIterator implements \JsonSerializable {
   public static function of(Agent ... $values): AgentList {
     return new AgentList($values);
   }
@@ -16,7 +16,7 @@ class AgentList extends \ArrayIterator {
   public function map(\Closure $clousure): AgentList {
     return new AgentList( array_map($clousure, iterator_to_array($this) ) );
   }
-  public function toArray(): array {
+  public function jsonSerialize(): array {
     return iterator_to_array($this);
   }
 }

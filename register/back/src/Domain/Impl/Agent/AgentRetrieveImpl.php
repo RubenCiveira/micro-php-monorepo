@@ -2,7 +2,10 @@
 namespace Register\Domain\Impl\Agent;
 
 use Civi\Micro\Exception\NotFoundException;
-use Register\Domain\Model\Query\AgentFilter;
+use Register\Domain\Model\Query\AgentFilter;use Register\Domain\Impl\ExecutionGroup\ExecutionGroupVisibilityFilter;
+use Register\Domain\Port\Spi\ExecutionGroup\ExecutionGroupRepository;
+use Register\Domain\Model\Query\ExecutionGroupFilter;
+
 use Register\Domain\Port\Api\Agent\Retrieve\AgentRetrieveUseCase;
 use Register\Domain\Port\Api\Agent\Retrieve\AgentRetrieveRequest;
 use Register\Domain\Port\Api\Agent\Retrieve\AgentRetrieveResponse;
@@ -10,6 +13,8 @@ use Register\Domain\Port\Spi\Agent\AgentRepository;
 
 class AgentRetrieveImpl implements AgentRetrieveUseCase {
   public function __construct(private readonly AgentRepository $repository,
+            private readonly ExecutionGroupVisibilityFilter $executionGroupVisibility,
+            private readonly ExecutionGroupRepository $executionGroupRepository,
             private readonly AgentVisibilityFilter $visibilityFilter,
            private readonly AgentReadFilter $readFilter) {}
   public function retrieve(AgentRetrieveRequest $request): AgentRetrieveResponse {

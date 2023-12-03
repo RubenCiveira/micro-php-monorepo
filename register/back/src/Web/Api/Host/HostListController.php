@@ -25,6 +25,6 @@ class HostListController {
     return new HostListRequest(actor: $actorRequest, filter: HostFilter::builder()->service( null )->build(), sort: new HostSort());
   }
   private function toDto(HostListResponse $response) {
-    return ['data' => $response->data->toArray(), 'next' => $response->next];
+    return $response;
   }
 }

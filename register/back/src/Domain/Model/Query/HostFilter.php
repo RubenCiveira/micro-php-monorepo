@@ -17,13 +17,13 @@ class HostFilter {
   }
   public function toBuilder(): HostFilterBuilder {
     $builder = new HostFilterBuilder();
-    if( $this->uids ) {
+    if( isset($this->uids) ) {
       $builder->uids( $this->uids );
     }
-    if( $this->search ) {
+    if( isset($this->search) ) {
       $builder->search( $this->search );
     }
-    if( $this->service ) {
+    if( isset($this->service) ) {
       $builder->service( $this->service);
     }
     return $builder;

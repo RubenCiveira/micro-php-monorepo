@@ -8,7 +8,7 @@ use Register\Domain\Port\Api\Service\Create\ServiceCreateUseCase;
 use Register\Domain\Port\Api\Service\Create\ServiceCreateRequest;
 use Register\Domain\Port\Api\Service\Create\ServiceCreateResponse;
 use Register\Domain\Model\Service;
-
+use Register\Domain\Model\Ref\ServiceRef;
 class ServiceCreateController {
   public function __construct(private readonly ServiceCreateUseCase $usecase,
                               private readonly IdentifyService $identity) {}
@@ -21,11 +21,12 @@ class ServiceCreateController {
   private function toRequest(RequestInterface $request, $args): ServiceCreateRequest {
     $actorRequest = $this->identity->identifyRequest($request);
     $row = $request->getParsedBody();
-    return new ServiceCreateRequest(actor: $actorRequest, entity: Service::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
-             ->name( isset($row['name']) ? $row['name'] : null)
-             ->version( isset($row['version']) ? $row['version'] : null)->build());
+    $entity = Service::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+                 ->name( isset($row['name']) ? $row['name'] : null)
+                 ->version( isset($row['version']) ? $row['version'] : 0)->build();
+    return new ServiceCreateRequest(actor: $actorRequest, entity: $entity);
   }
   private function toDto(ServiceCreateResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

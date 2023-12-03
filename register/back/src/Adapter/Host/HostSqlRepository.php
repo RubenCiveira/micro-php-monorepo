@@ -1,22 +1,20 @@
 <?php
 namespace Register\Adapter\Host;
 
-use Closure;
-use Civi\Micro\Sql\SqlTemplate;
+use Civi\Micro\Exception\ConstraintException;
+use Civi\Micro\Exception\NotFoundException;
+use Civi\Micro\Exception\OptimistLockException;
+use Civi\Micro\Sql\NotUniqueException;
 use Civi\Micro\Sql\SqlParam;
-use Register\Domain\Port\Spi\Host\HostRepository;
+use Civi\Micro\Sql\SqlTemplate;
+use Closure;
 use Register\Domain\Model\Host;
+use Register\Domain\Model\List\HostList;
 use Register\Domain\Model\Query\HostFilter;
 use Register\Domain\Model\Query\HostSort;
 use Register\Domain\Model\Ref\HostRef;
-use Register\Domain\Model\List\HostList;
-use Civi\Micro\Exception\OptimistLockException;
-use Civi\Micro\Exception\NotFoundException;
-use Civi\Micro\Sql\NotUniqueException;
-use Civi\Micro\Exception\ConstraintException;
 use Register\Domain\Model\Ref\ServiceRef;
-
-
+use Register\Domain\Port\Spi\Host\HostRepository;
 class HostSqlRepository implements HostRepository {
   public function __construct(private readonly SqlTemplate $db) {}
   public function list(?HostFilter $filter, ?HostSort $sort): HostList {
@@ -25,7 +23,7 @@ class HostSqlRepository implements HostRepository {
   }
   public function create(Host $entity): Host {
     try {
-      $this->db->execute('INSERT INTO host ( uid, name, service, version) VALUES ( :uid, :name, :service, :version)',[
+      $this->db->execute('INSERT INTO "host" ( "uid", "name", "service", "version") VALUES ( :uid, :name, :service, :version)',[
            new SqlParam(name: 'uid', value: $entity->uid, type: SqlParam::INT),
            new SqlParam(name: 'name', value: $entity->name, type: SqlParam::STR),
            new SqlParam(name: 'service', value: $entity->service?->uid, type: SqlParam::STR),
@@ -42,14 +40,14 @@ class HostSqlRepository implements HostRepository {
   }
   public function update(Host $update): ?Host {
     try {
-      $result = $this->db->execute('UPDATE host SET name = :name , service = :service , version = :version WHERE uid = :uid and version = :_lock_version', [
+      $result = $this->db->execute('UPDATE "host" SET "name" = :name , "service" = :service , "version" = :version WHERE "uid" = :uid and "version" = :_lock_version', [
            new SqlParam(name: 'uid', value: $update->uid, type: SqlParam::INT),
            new SqlParam(name: 'name', value: $update->name, type: SqlParam::STR),
            new SqlParam(name: 'service', value: $update->service?->uid, type: SqlParam::INT),
            new SqlParam(name: 'version', value: $update->version + 1, type: SqlParam::INT),
            new SqlParam(name: '_lock_version', value: $update->version, type: SqlParam::INT)
       ]);
-      if( !$result && $this->db->exists('select uid from host where uid = :uid', ['uid' => $update->uid ]) ) {
+      if( !$result && $this->db->exists('select "uid" from "host" where "uid" = :uid', ['uid' => $update->uid ]) ) {
         throw new OptimistLockException($update->uid, $update->version);
       } else if(!$result) {
         throw new NotFoundException($update->uid);
@@ -60,7 +58,7 @@ class HostSqlRepository implements HostRepository {
     return $update->toBuilder()->version( $update->version + 1 )->build();
   }
   public function delete(HostRef $ref): bool {
-    return $this->db->execute('DELETE FROM host where uid = :uid',['uid' => $entity->uid]);
+    return $this->db->execute('DELETE FROM "host" where "uid" = :uid',[new SqlParam(name: 'uid', value: $ref->uid, type:SqlParam::INT)]);
   }
   public function exists(HostRef $ref, ?HostFilter $filter=null): bool {
     $sqlFilter = $this->filter($ref, $filter, null);
@@ -71,27 +69,27 @@ class HostSqlRepository implements HostRepository {
     $query = '';
     $params = [];
     if( $ref && $ref->uid ) {
-      $query .= ' and uid = :uid';
+      $query .= ' and "uid" = :uid';
       $params[] = new SqlParam( name: 'uid', value: $ref->uid, type: SqlParam::INT);
     }
     if( $filter ) {
       if( $filter->service) {
-        $query .= ' and service = :service';
+        $query .= ' and "service" = :service';
         $params[] = new SqlParam(name: 'service', value: $filter->service, type: SqlParam::STR);
       }
     }
-    return ['query' => 'SELECT * FROM host'
+    return ['query' => 'SELECT * FROM "host"'
                           . ($join ? ' JOIN ' . substr($join, 6) : '')
                           . ($query ? ' WHERE ' . substr($query, 4) : ''),
                  'params' => $params];
   }
   private function checkDuplicates(Host $entity) {
     $values = ['uid' => $entity->uid];
-    if( $this->db->exists('SELECT  uid from host where uid = :uid', $values) ) {
+    if( $this->db->exists('SELECT  "uid" from "host" where "uid" = :uid', $values) ) {
       throw new ConstraintException('not-unique', $values);
     }
-    $values = ['name' => $entity->name];
-    if( $this->db->exists('SELECT  name from host where name = :name and uid != :uid', $values) ) {
+    $values = ['name' => $entity->name, 'uid' => $entity->uid];
+    if( $this->db->exists('SELECT  "name" from "host" where "name" = :name and "uid" != :uid', $values) ) {
       throw new ConstraintException('not-unique', ['name' => $entity->name]);
     }
   }

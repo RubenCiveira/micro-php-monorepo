@@ -13,10 +13,10 @@ class AgentFilter {
   }
   public function toBuilder(): AgentFilterBuilder {
     $builder = new AgentFilterBuilder();
-    if( $this->uids ) {
+    if( isset($this->uids) ) {
       $builder->uids( $this->uids );
     }
-    if( $this->search ) {
+    if( isset($this->search) ) {
       $builder->search( $this->search );
     }
     return $builder;

@@ -20,16 +20,16 @@ class AgentExecutionGroupFilter {
   }
   public function toBuilder(): AgentExecutionGroupFilterBuilder {
     $builder = new AgentExecutionGroupFilterBuilder();
-    if( $this->uids ) {
+    if( isset($this->uids) ) {
       $builder->uids( $this->uids );
     }
-    if( $this->search ) {
+    if( isset($this->search) ) {
       $builder->search( $this->search );
     }
-    if( $this->agent ) {
+    if( isset($this->agent) ) {
       $builder->agent( $this->agent);
     }
-    if( $this->group ) {
+    if( isset($this->group) ) {
       $builder->group( $this->group);
     }
     return $builder;

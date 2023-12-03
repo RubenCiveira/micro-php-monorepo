@@ -3,7 +3,7 @@ namespace Register\Domain\Model\List;
 
 use Register\Domain\Model\Host;
 
-class HostList extends \ArrayIterator {
+class HostList extends \ArrayIterator implements \JsonSerializable {
   public static function of(Host ... $values): HostList {
     return new HostList($values);
   }
@@ -16,7 +16,7 @@ class HostList extends \ArrayIterator {
   public function map(\Closure $clousure): HostList {
     return new HostList( array_map($clousure, iterator_to_array($this) ) );
   }
-  public function toArray(): array {
+  public function jsonSerialize(): array {
     return iterator_to_array($this);
   }
 }

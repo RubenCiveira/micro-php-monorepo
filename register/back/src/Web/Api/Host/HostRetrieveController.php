@@ -23,6 +23,6 @@ class HostRetrieveController {
     return new HostRetrieveRequest(actor: $actorRequest, ref: new HostRef(uid: $args['uid'] ));
   }
   private function toDto(HostRetrieveResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

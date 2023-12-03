@@ -3,7 +3,7 @@ namespace Register\Domain\Model\List;
 
 use Register\Domain\Model\ExecutionGroup;
 
-class ExecutionGroupList extends \ArrayIterator {
+class ExecutionGroupList extends \ArrayIterator implements \JsonSerializable {
   public static function of(ExecutionGroup ... $values): ExecutionGroupList {
     return new ExecutionGroupList($values);
   }
@@ -16,7 +16,7 @@ class ExecutionGroupList extends \ArrayIterator {
   public function map(\Closure $clousure): ExecutionGroupList {
     return new ExecutionGroupList( array_map($clousure, iterator_to_array($this) ) );
   }
-  public function toArray(): array {
+  public function jsonSerialize(): array {
     return iterator_to_array($this);
   }
 }

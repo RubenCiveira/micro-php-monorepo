@@ -22,19 +22,19 @@ class Config extends ConfigRef {
   }
   public function toBuilder(): ConfigBuilder {
     $builder = new ConfigBuilder();
-    if( $this->uid ) {
+    if( isset($this->uid) ) {
       $builder->uid( $this->uid);
     }
-    if( $this->service ) {
+    if( isset($this->service) ) {
       $builder->service( $this->service);
     }
-    if( $this->property ) {
+    if( isset($this->property) ) {
       $builder->property( $this->property);
     }
-    if( $this->value ) {
+    if( isset($this->value) ) {
       $builder->value( $this->value);
     }
-    if( $this->version ) {
+    if( isset($this->version) ) {
       $builder->version( $this->version);
     }
     return $builder;

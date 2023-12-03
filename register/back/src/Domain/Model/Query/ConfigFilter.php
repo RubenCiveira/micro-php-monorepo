@@ -17,13 +17,13 @@ class ConfigFilter {
   }
   public function toBuilder(): ConfigFilterBuilder {
     $builder = new ConfigFilterBuilder();
-    if( $this->uids ) {
+    if( isset($this->uids) ) {
       $builder->uids( $this->uids );
     }
-    if( $this->search ) {
+    if( isset($this->search) ) {
       $builder->search( $this->search );
     }
-    if( $this->service ) {
+    if( isset($this->service) ) {
       $builder->service( $this->service);
     }
     return $builder;

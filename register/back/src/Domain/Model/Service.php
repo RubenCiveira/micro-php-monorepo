@@ -19,16 +19,16 @@ class Service extends ServiceRef {
   }
   public function toBuilder(): ServiceBuilder {
     $builder = new ServiceBuilder();
-    if( $this->uid ) {
+    if( isset($this->uid) ) {
       $builder->uid( $this->uid);
     }
-    if( $this->name ) {
+    if( isset($this->name) ) {
       $builder->name( $this->name);
     }
-    if( $this->enabled ) {
+    if( isset($this->enabled) ) {
       $builder->enabled( $this->enabled);
     }
-    if( $this->version ) {
+    if( isset($this->version) ) {
       $builder->version( $this->version);
     }
     return $builder;

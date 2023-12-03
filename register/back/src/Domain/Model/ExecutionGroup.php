@@ -17,13 +17,13 @@ class ExecutionGroup extends ExecutionGroupRef {
   }
   public function toBuilder(): ExecutionGroupBuilder {
     $builder = new ExecutionGroupBuilder();
-    if( $this->uid ) {
+    if( isset($this->uid) ) {
       $builder->uid( $this->uid);
     }
-    if( $this->name ) {
+    if( isset($this->name) ) {
       $builder->name( $this->name);
     }
-    if( $this->version ) {
+    if( isset($this->version) ) {
       $builder->version( $this->version);
     }
     return $builder;

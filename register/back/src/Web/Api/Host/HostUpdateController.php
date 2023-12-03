@@ -7,10 +7,9 @@ use Register\Web\Service\IdentifyService;
 use Register\Domain\Port\Api\Host\Update\HostUpdateUseCase;
 use Register\Domain\Port\Api\Host\Update\HostUpdateRequest;
 use Register\Domain\Port\Api\Host\Update\HostUpdateResponse;
-use Register\Domain\Model\Ref\HostRef;
 use Register\Domain\Model\Host;
+use Register\Domain\Model\Ref\HostRef;
 use Register\Domain\Model\Ref\ServiceRef;
-
 class HostUpdateController {
   public function __construct(private readonly HostUpdateUseCase $usecase,
                               private readonly IdentifyService $identity) {}
@@ -23,12 +22,13 @@ class HostUpdateController {
   private function toRequest(RequestInterface $request, $args): HostUpdateRequest {
     $actorRequest = $this->identity->identifyRequest($request);
     $row = $request->getParsedBody();
-    return new HostUpdateRequest(actor: $actorRequest, ref: new HostRef(uid: $args['uid']), entity: Host::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
-             ->name( isset($row['name']) ? $row['name'] : null)
-             ->service( isset($row['service']['uid']) ? new ServiceRef( uid : $row['service']['uid'] ) : null)
-             ->version( isset($row['version']) ? $row['version'] : null)->build());
+    $entity = Host::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+                 ->name( isset($row['name']) ? $row['name'] : null)
+                 ->service( isset($row['service']['uid']) ? new ServiceRef( uid : $row['service']['uid'] ) : null)
+                 ->version( isset($row['version']) ? $row['version'] : 0)->build();
+    return new HostUpdateRequest(actor: $actorRequest, ref: new HostRef(uid: $args['uid']), entity: $entity);
   }
   private function toDto(HostUpdateResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

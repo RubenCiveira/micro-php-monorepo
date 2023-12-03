@@ -23,6 +23,6 @@ class ConfigRetrieveController {
     return new ConfigRetrieveRequest(actor: $actorRequest, ref: new ConfigRef(uid: $args['uid'] ));
   }
   private function toDto(ConfigRetrieveResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

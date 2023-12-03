@@ -8,7 +8,7 @@ use Register\Domain\Port\Api\ExecutionGroup\Create\ExecutionGroupCreateUseCase;
 use Register\Domain\Port\Api\ExecutionGroup\Create\ExecutionGroupCreateRequest;
 use Register\Domain\Port\Api\ExecutionGroup\Create\ExecutionGroupCreateResponse;
 use Register\Domain\Model\ExecutionGroup;
-
+use Register\Domain\Model\Ref\ExecutionGroupRef;
 class ExecutionGroupCreateController {
   public function __construct(private readonly ExecutionGroupCreateUseCase $usecase,
                               private readonly IdentifyService $identity) {}
@@ -21,11 +21,12 @@ class ExecutionGroupCreateController {
   private function toRequest(RequestInterface $request, $args): ExecutionGroupCreateRequest {
     $actorRequest = $this->identity->identifyRequest($request);
     $row = $request->getParsedBody();
-    return new ExecutionGroupCreateRequest(actor: $actorRequest, entity: ExecutionGroup::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
-             ->name( isset($row['name']) ? $row['name'] : null)
-             ->version( isset($row['version']) ? $row['version'] : null)->build());
+    $entity = ExecutionGroup::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+                 ->name( isset($row['name']) ? $row['name'] : null)
+                 ->version( isset($row['version']) ? $row['version'] : 0)->build();
+    return new ExecutionGroupCreateRequest(actor: $actorRequest, entity: $entity);
   }
   private function toDto(ExecutionGroupCreateResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

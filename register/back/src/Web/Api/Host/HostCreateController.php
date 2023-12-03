@@ -8,8 +8,8 @@ use Register\Domain\Port\Api\Host\Create\HostCreateUseCase;
 use Register\Domain\Port\Api\Host\Create\HostCreateRequest;
 use Register\Domain\Port\Api\Host\Create\HostCreateResponse;
 use Register\Domain\Model\Host;
+use Register\Domain\Model\Ref\HostRef;
 use Register\Domain\Model\Ref\ServiceRef;
-
 class HostCreateController {
   public function __construct(private readonly HostCreateUseCase $usecase,
                               private readonly IdentifyService $identity) {}
@@ -22,12 +22,13 @@ class HostCreateController {
   private function toRequest(RequestInterface $request, $args): HostCreateRequest {
     $actorRequest = $this->identity->identifyRequest($request);
     $row = $request->getParsedBody();
-    return new HostCreateRequest(actor: $actorRequest, entity: Host::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
-             ->name( isset($row['name']) ? $row['name'] : null)
-             ->service( isset($row['service']['uid']) ? new ServiceRef( uid : $row['service']['uid'] ) : null)
-             ->version( isset($row['version']) ? $row['version'] : null)->build());
+    $entity = Host::builder()->uid( isset($row['uid']) ? $row['uid'] : null)
+                 ->name( isset($row['name']) ? $row['name'] : null)
+                 ->service( isset($row['service']['uid']) ? new ServiceRef( uid : $row['service']['uid'] ) : null)
+                 ->version( isset($row['version']) ? $row['version'] : 0)->build();
+    return new HostCreateRequest(actor: $actorRequest, entity: $entity);
   }
   private function toDto(HostCreateResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

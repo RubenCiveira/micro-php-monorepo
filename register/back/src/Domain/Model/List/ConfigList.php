@@ -3,7 +3,7 @@ namespace Register\Domain\Model\List;
 
 use Register\Domain\Model\Config;
 
-class ConfigList extends \ArrayIterator {
+class ConfigList extends \ArrayIterator implements \JsonSerializable {
   public static function of(Config ... $values): ConfigList {
     return new ConfigList($values);
   }
@@ -16,7 +16,7 @@ class ConfigList extends \ArrayIterator {
   public function map(\Closure $clousure): ConfigList {
     return new ConfigList( array_map($clousure, iterator_to_array($this) ) );
   }
-  public function toArray(): array {
+  public function jsonSerialize(): array {
     return iterator_to_array($this);
   }
 }

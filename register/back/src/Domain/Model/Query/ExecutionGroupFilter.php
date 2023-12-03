@@ -13,10 +13,10 @@ class ExecutionGroupFilter {
   }
   public function toBuilder(): ExecutionGroupFilterBuilder {
     $builder = new ExecutionGroupFilterBuilder();
-    if( $this->uids ) {
+    if( isset($this->uids) ) {
       $builder->uids( $this->uids );
     }
-    if( $this->search ) {
+    if( isset($this->search) ) {
       $builder->search( $this->search );
     }
     return $builder;

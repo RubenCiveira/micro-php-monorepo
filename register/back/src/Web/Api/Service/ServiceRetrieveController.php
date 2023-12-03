@@ -23,6 +23,6 @@ class ServiceRetrieveController {
     return new ServiceRetrieveRequest(actor: $actorRequest, ref: new ServiceRef(uid: $args['uid'] ));
   }
   private function toDto(ServiceRetrieveResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

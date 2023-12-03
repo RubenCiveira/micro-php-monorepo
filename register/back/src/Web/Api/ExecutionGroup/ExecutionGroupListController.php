@@ -24,6 +24,6 @@ class ExecutionGroupListController {
     return new ExecutionGroupListRequest(actor: $actorRequest, filter: ExecutionGroupFilter::builder()->build(), sort: new ExecutionGroupSort());
   }
   private function toDto(ExecutionGroupListResponse $response) {
-    return ['data' => $response->data->toArray(), 'next' => $response->next];
+    return $response;
   }
 }

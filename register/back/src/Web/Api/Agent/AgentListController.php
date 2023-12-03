@@ -24,6 +24,6 @@ class AgentListController {
     return new AgentListRequest(actor: $actorRequest, filter: AgentFilter::builder()->build(), sort: new AgentSort());
   }
   private function toDto(AgentListResponse $response) {
-    return ['data' => $response->data->toArray(), 'next' => $response->next];
+    return $response;
   }
 }

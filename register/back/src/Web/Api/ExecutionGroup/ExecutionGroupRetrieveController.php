@@ -23,6 +23,6 @@ class ExecutionGroupRetrieveController {
     return new ExecutionGroupRetrieveRequest(actor: $actorRequest, ref: new ExecutionGroupRef(uid: $args['uid'] ));
   }
   private function toDto(ExecutionGroupRetrieveResponse $response) {
-    return $response;
+    return $response->data;
   }
 }

@@ -3,7 +3,7 @@ namespace Register\Domain\Model\List;
 
 use Register\Domain\Model\Service;
 
-class ServiceList extends \ArrayIterator {
+class ServiceList extends \ArrayIterator implements \JsonSerializable {
   public static function of(Service ... $values): ServiceList {
     return new ServiceList($values);
   }
@@ -16,7 +16,7 @@ class ServiceList extends \ArrayIterator {
   public function map(\Closure $clousure): ServiceList {
     return new ServiceList( array_map($clousure, iterator_to_array($this) ) );
   }
-  public function toArray(): array {
+  public function jsonSerialize(): array {
     return iterator_to_array($this);
   }
 }

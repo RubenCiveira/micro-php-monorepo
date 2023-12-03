@@ -20,16 +20,16 @@ class Agent extends AgentRef {
   }
   public function toBuilder(): AgentBuilder {
     $builder = new AgentBuilder();
-    if( $this->uid ) {
+    if( isset($this->uid) ) {
       $builder->uid( $this->uid);
     }
-    if( $this->name ) {
+    if( isset($this->name) ) {
       $builder->name( $this->name);
     }
-    if( $this->groups ) {
+    if( isset($this->groups) ) {
       $builder->groups( $this->groups);
     }
-    if( $this->version ) {
+    if( isset($this->version) ) {
       $builder->version( $this->version);
     }
     return $builder;

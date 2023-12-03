@@ -3,7 +3,7 @@ namespace Register\Domain\Model\List;
 
 use Register\Domain\Model\AgentExecutionGroup;
 
-class AgentExecutionGroupList extends \ArrayIterator {
+class AgentExecutionGroupList extends \ArrayIterator implements \JsonSerializable {
   public static function of(AgentExecutionGroup ... $values): AgentExecutionGroupList {
     return new AgentExecutionGroupList($values);
   }
@@ -16,7 +16,7 @@ class AgentExecutionGroupList extends \ArrayIterator {
   public function map(\Closure $clousure): AgentExecutionGroupList {
     return new AgentExecutionGroupList( array_map($clousure, iterator_to_array($this) ) );
   }
-  public function toArray(): array {
+  public function jsonSerialize(): array {
     return iterator_to_array($this);
   }
 }

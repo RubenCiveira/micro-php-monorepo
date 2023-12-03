@@ -13,10 +13,10 @@ class ServiceFilter {
   }
   public function toBuilder(): ServiceFilterBuilder {
     $builder = new ServiceFilterBuilder();
-    if( $this->uids ) {
+    if( isset($this->uids) ) {
       $builder->uids( $this->uids );
     }
-    if( $this->search ) {
+    if( isset($this->search) ) {
       $builder->search( $this->search );
     }
     return $builder;
